@@ -5,6 +5,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+//verify email
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Models\User;
+
 Route::get('/', function () {
     return view('home');
 })->name('home');
@@ -48,5 +53,19 @@ Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('message', 'Email de vérification renvoyé !');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+Route::get('/simulate-mail', function () {
+    $user = auth()->user(); // l’utilisateur connecté
+
+    if (!$user) {
+        return redirect('/connexion')->with('message', 'Connectez-vous pour simuler le mail.');
+    }
+
+    $notification = new \Illuminate\Auth\Notifications\VerifyEmail();
+    $mail = $notification->toMail($user);
+
+    return $mail->render();
+})->middleware('auth');
+
 
 require __DIR__.'/auth.php';
