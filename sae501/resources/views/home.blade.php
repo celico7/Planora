@@ -1,8 +1,22 @@
-@extends('layout/layout')
+@extends('layouts.app')
 
 @section('title', 'Accueil')
 
 @section('content')
-    <h2 class="text-xl font-semibold text-gray-800 mb-4">Bonjour</h2>
-    <p class="text-gray-600">test</p>
+    
+        <div class="p-4">
+    @auth
+        <p>Bonjour {{ Auth::user()->name }}</p>
+
+        <form method="POST" action="{{ route('logout') }}">
+        @csrf
+        <button type="submit">Déconnexion</button>
+    </form>
+    @endauth
+
+    @guest
+        <p>Bonjour invité ! <a href="{{ route('login') }}">Se connecter</a></p>
+    @endguest
+</div>
+
 @endsection
