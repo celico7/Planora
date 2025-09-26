@@ -4,15 +4,17 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\HomeController;
 
 //verify email
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Models\User;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/connexion', function () {
     return view('auth/login');
@@ -67,5 +69,8 @@ Route::get('/simulate-mail', function () {
     return $mail->render();
 })->middleware('auth');
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('projects', ProjectController::class);
+});
 
 require __DIR__.'/auth.php';
