@@ -34,9 +34,11 @@
                             <li>
                                 <a href="/connexion" class="block px-4 py-2 text-gray-700 hover:text-green-600">Se connecter</a>
                             </li>
+                            @auth
                             <li>
                                 <a href="/dashboard" class="block px-4 py-2 text-gray-700 hover:text-green-600">Mon compte</a>
                             </li>
+                            @endauth
                         </ul>
                     </li>
                 </ul>

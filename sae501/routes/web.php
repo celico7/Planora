@@ -6,8 +6,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TaskController;
 
-//verify email
+//email de verif
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Models\User;
@@ -72,5 +73,19 @@ Route::get('/simulate-mail', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('projects', ProjectController::class);
 });
+
+use App\Http\Controllers\SprintController;
+
+Route::prefix('projects/{project}')->group(function () {
+    // Routessprints
+    Route::resource('sprints', SprintController::class);
+
+    // Routes pour les tâches d’un sprint
+    Route::prefix('sprints/{sprint}')->group(function () {
+        Route::get('tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+        Route::post('tasks', [TaskController::class, 'index'])->name('tasks.index');
+    });
+});
+
 
 require __DIR__.'/auth.php';

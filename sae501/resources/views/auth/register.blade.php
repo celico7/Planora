@@ -10,7 +10,7 @@
 
         <!-- Name -->
         <div>
-            <label for="name" class="block text-sm font-medium text-gray-700">Nom</label>
+            <label for="name" class="block text-sm font-medium text-gray-700">Nom*</label>
             <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring-green-500 p-2" />
             @error('name')
@@ -20,7 +20,7 @@
 
         <!-- Email -->
         <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Adresse email</label>
+            <label for="email" class="block text-sm font-medium text-gray-700">Adresse email*</label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring-green-500 p-2" />
             @error('email')
@@ -30,7 +30,7 @@
 
         <!-- Password -->
         <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
+            <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe*</label>
             <input id="password" type="password" name="password" required
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring-green-500 p-2" />
             @error('password')
@@ -40,7 +40,7 @@
 
         <!-- Confirm Password -->
         <div>
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
+            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmer le mot de passe*</label>
             <input id="password_confirmation" type="password" name="password_confirmation" required
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-green-500 focus:ring-green-500 p-2" />
             @error('password_confirmation')
