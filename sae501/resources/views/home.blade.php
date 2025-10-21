@@ -18,6 +18,11 @@
     <h3>Vos projets récents :</h3>
     @foreach(auth()->user()->projects as $project)
         <strong>{{ $project->nom }}</strong> - {{ $project->description }} <br>
+        <a href="{{ route('projects.index', $project) }}">
+            <x-secondary-button>
+                Voir le projet
+            </x-secondary-button>
+        </a>
     @endforeach
 
 
@@ -34,11 +39,11 @@
 <!-- en tant que invité -->
     @guest
         <p>
-            Bonjour invité !  
+            Bonjour invité !
             <a href="{{ route('login') }}"
-                class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 
-                       focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg 
-                       text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400 
+                class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900
+                       focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg
+                       text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400
                        dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
                 Se connecter
             </a>
