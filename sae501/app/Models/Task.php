@@ -6,7 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Task extends Model
 {
-    protected $fillable = ['name', 'description', 'status', 'sprint_id', 'project_id'];
+    protected $fillable = [
+        'epic_id',
+        'sprint_id',
+        'nom',
+        'description',
+        'responsable_id',
+        'echeance',
+        'statut',
+        'priorite',
+    ];
 
     public function sprint()
     {
@@ -17,4 +26,10 @@ class Task extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function responsable()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'responsable_id');
+    }   
+
 }

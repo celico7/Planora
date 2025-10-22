@@ -28,15 +28,25 @@
                             <i class="bi bi-person-circle text-xl hover:text-green-600"></i>
                         </a>
                         <ul class="absolute right-0 mt-2 w-40 bg-white border rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                            @guest
                             <li>
                                 <a href="/inscription" class="block px-4 py-2 text-gray-700 hover:text-green-600">S'inscrire</a>
                             </li>
                             <li>
                                 <a href="/connexion" class="block px-4 py-2 text-gray-700 hover:text-green-600">Se connecter</a>
                             </li>
+                            @endguest
                             @auth
                             <li>
                                 <a href="/dashboard" class="block px-4 py-2 text-gray-700 hover:text-green-600">Mon compte</a>
+                            </li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left px-4 py-2 text-gray-700 hover:text-green-600">
+                                        Se déconnecter
+                                    </button>
+                                </form>
                             </li>
                             @endauth
                         </ul>

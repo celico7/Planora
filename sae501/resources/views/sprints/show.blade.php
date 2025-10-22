@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>{{ $sprint->nom }}</h1>
-    <p>Durée : {{ $sprint->date_debut }} → {{ $sprint->date_fin }}</p>
+    <p>Durée : {{ $sprint->begining }} → {{ $sprint->end }}</p>
 
     <h3>Progression du sprint</h3>
     <div class="progress mb-3" style="height: 25px;">
@@ -20,40 +20,18 @@
 
     <hr>
 
-    <h3>Créer une nouvelle tâche</h3>
-    <form method="POST" action="{{ route('tasks.store') }}">
-        @csrf
-        <input type="hidden" name="sprint_id" value="{{ $sprint->id }}">
-        <div class="mb-3">
-            <label for="nom" class="form-label">Nom de la tâche</label>
-            <input type="text" name="nom" id="nom" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="description" id="description" class="form-control"></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="status" class="form-label">Statut</label>
-            <select name="status" id="status" class="form-control">
-                <option value="todo">À faire</option>
-                <option value="in_progress">En cours</option>
-                <option value="done">Terminée</option>
-            </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Créer la tâche</button>
-    </form>
-
-    <hr>
-
     <h3>Tâches du sprint</h3>
     <ul>
         @foreach($sprint->tasks as $task)
             <li>
-                <strong>{{ $task->nom }}</strong> — {{ $task->status }}
+                <strong>{{ $task->nom }}</strong> — {{ $task->statut }}
                 <br>
                 {{ $task->description }}
             </li>
         @endforeach
     </ul>
+    <a href="{{ route('tasks.create', ['project' => $sprint->project_id, 'sprint' => $sprint->id]) }}">
+         ➕ Ajouter une tâche
+    </a>
 </div>
 @endsection

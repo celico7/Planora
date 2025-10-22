@@ -33,11 +33,9 @@
     @else
         @foreach($project->sprints as $sprint)
             <li>
-                <strong>{{ $sprint->nom }}</strong> - Du {{ $sprint->begining }} au {{ $sprint->end }}
-                <a href="{{ route('tasks.create', ['project' => $sprint->project_id, 'sprint' => $sprint->id]) }}">
-    ➕ Ajouter une tâche
-</a>
-
+                <a href="{{ route('sprints.show', ['project' => $sprint->project_id, 'sprint' => $sprint->id]) }}">
+                    <strong>{{ $sprint->nom }}</strong> - Du {{ $sprint->begining }} au {{ $sprint->end }}
+                </a>
             </li>
         @endforeach
     @endif

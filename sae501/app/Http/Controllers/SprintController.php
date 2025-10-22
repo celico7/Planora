@@ -16,10 +16,20 @@ class SprintController extends Controller
         return view('sprints.index', compact('project', 'sprints'));
     }
 
-    public function create(Project $project)
-    {
-        return view('sprints.create', compact('project'));
-    }
+    public function create(Project $project, Sprint $sprint)
+{
+    // Valeurs à zéro ou vides pour l’affichage correct
+    $done = 0;
+    $inProgress = 0;
+    $todo = 0;
+    $total = 1; // pour éviter la division par 0
+    $progress = 0;
+
+    return view('sprints.create', compact(
+        'project', 'sprint', 'done', 'inProgress', 'todo', 'total', 'progress'
+    ));
+}
+
 
     public function store(Request $request, Project $project)
     {
@@ -36,29 +46,36 @@ class SprintController extends Controller
             'end' => $end_date,
         ]);
 
-        return redirect()->route('projects.index', $project)->with('success', 'Sprint créé');
+        return redirect()->route('projects.index', $project)
+            ->with('success', 'Sprint créé');
     }
 
-public function show($projectId, $sprintId)
+    public function show($projectId, $sprintId)
 {
-    $sprint = \App\Models\Sprint::where('project_id', $projectId)
+    $project = Project::findOrFail($projectId);
+    $sprint = Sprint::where('project_id', $projectId)
         ->where('id', $sprintId)
+        ->with('tasks')
         ->firstOrFail();
 
-    // Récupère les tâches liées au sprint
     $tasks = $sprint->tasks ?? collect();
-
+    $normalized = $tasks->map(function ($t) {
+        $raw = $t->statut ?? '';
+        $raw = trim(mb_strtolower($raw));
+        if (class_exists(\Transliterator::class)) {
+            $trans = \Transliterator::createFromRules(':: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;');
+            $raw = $trans->transliterate($raw);
+        }
+        return $raw;
+    });
+    $counts = $normalized->countBy()->toArray();
+    $todo = $counts['a faire'] ?? 0;
+    $inProgress = $counts['en cours'] ?? 0;
+    $done = $counts['termine'] ?? 0;
     $total = $tasks->count();
-    $done = $tasks->where('statut', 'terminé')->count();
-    $inProgress = $tasks->where('statut', 'en cours')->count();
-    $todo = $tasks->where('statut', 'à faire')->count();
-
     $progress = $total > 0 ? round(($done / $total) * 100, 1) : 0;
 
-    return view('sprints.show', compact(
-        'sprint', 'tasks', 'progress', 'done', 'inProgress', 'todo', 'total'
-    ));
+    return view('sprints.show', compact('project', 'sprint', 'tasks', 'done', 'inProgress', 'todo', 'total', 'progress'));
 }
-
 
 }
