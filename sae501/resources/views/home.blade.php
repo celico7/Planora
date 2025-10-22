@@ -4,54 +4,61 @@
 
 @section('content')
 <div class="p-4">
-
-<!-- en étant connecté -->
     @auth
-        <p>Bonjour {{ Auth::user()->name }}</p>
-
-        <a href="{{ route('projects.create') }}">
-            <x-secondary-button>
-                Créer un projet
-            </x-secondary-button>
-        </a>
-
-    <h3>Vos projets récents :</h3>
-    @foreach(auth()->user()->projects as $project)
-        <strong>{{ $project->nom }}</strong> - {{ $project->description }} <br>
-        <a href="{{ route('projects.index', $project) }}">
-            <x-secondary-button>
-                Voir le projet
-            </x-secondary-button>
-        </a>
-    @endforeach
-
-
-
-        <form method="POST" action="{{ route('logout') }}" class="mt-4">
-            @csrf
-            <button type="submit"
-                class="border border-gray-800 rounded-lg">
-                Déconnexion
-            </button>
-        </form>
+        <p class="mb-5 text-lg font-semibold">Bonjour {{ Auth::user()->name }}</p>
+        
+        <div class="space-y-8 bg-gray-100 rounded-md">
+            <!-- Projets Récents -->
+            <div class="bg-gray-200 p-4 rounded-md">
+                <div class="mb-3">
+                    <input type="text" value="projets récents" class="text-sm px-3 py-1 rounded bg-white border-none w-48" readonly>
+                </div>
+                <div class="grid grid-cols-5 gap-6">
+                    @forelse(auth()->user()->projects->sortByDesc('created_at')->take(5) as $project)
+                        <div class="bg-gray-500 rounded-md h-48 flex flex-col justify-between p-4">
+                            <div>
+                                <div class="font-bold text-white truncate">{{ $project->nom }}</div>
+                                <div class="text-sm text-white/90">{{ $project->description }}</div>
+                            </div>
+                            <a href="{{ route('projects.show', $project) }}" class="mt-2">
+                                <button class="px-3 py-1 bg-white text-gray-700 rounded shadow text-xs font-semibold hover:bg-[#0CBABA] hover:text-white transition">
+                                    Voir le projet
+                                </button>
+                            </a>
+                        </div>
+                    @empty
+                        <div class="col-span-5 text-center text-gray-500">
+                            Aucun projet récent.
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+            <!-- Tous les projets -->
+            <div class="bg-gray-200 p-4 rounded-md">
+                <div class="mb-3">
+                    <input type="text" value="tous les projets" class="text-sm px-3 py-1 rounded bg-white border-none w-48" readonly>
+                </div>
+                <div class="grid grid-cols-5 gap-6">
+                    @forelse(auth()->user()->projects as $project)
+                        <div class="bg-gray-500 rounded-md h-48 flex flex-col justify-between p-4">
+                            <div>
+                                <div class="font-bold text-white truncate">{{ $project->nom }}</div>
+                                <div class="text-sm text-white/90">{{ $project->description }}</div>
+                            </div>
+                            <a href="{{ route('projects.show', $project) }}" class="mt-2">
+                                <button class="px-3 py-1 bg-white text-gray-700 rounded shadow text-xs font-semibold hover:bg-[#0CBABA] hover:text-white transition">
+                                    Voir le projet
+                                </button>
+                            </a>
+                        </div>
+                    @empty
+                        <div class="col-span-5 text-center text-gray-500">
+                            Aucun projet.
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
     @endauth
-
-<!-- en tant que invité -->
-    @guest
-        <p>
-            Bonjour invité !
-            <a href="{{ route('login') }}"
-                class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900
-                       focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg
-                       text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-gray-600 dark:text-gray-400
-                       dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
-                Se connecter
-            </a>
-        </p>
-    @endguest
-
-    <p class="text-gray-600 dark:text-gray-400 mt-6">
-        Gérez vos projets, sprints et tâches facilement avec la méthode Agile.
-    </p>
 </div>
 @endsection

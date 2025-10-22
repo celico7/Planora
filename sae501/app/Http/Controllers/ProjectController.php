@@ -57,13 +57,13 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        // Vérification que l’utilisateur est bien le chef du projet
         if ($project->chef_projet !== Auth::id()) {
             abort(403, 'Accès interdit');
         }
 
-        return view('projects.index', compact('project'));
+        return view('projects.show', compact('project'));
     }
+
 
     /**
      * Formulaire d’édition d’un projet
