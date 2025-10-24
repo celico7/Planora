@@ -15,13 +15,13 @@
         </form>
     </div>
 
-    <a href="{{ route('sprints.create', $project->id) }}" class="btn btn-primary mb-4">Créer un sprint</a>
+    <a href="{{ route('projects.sprints.create', ['project' => $project->id]) }}" class="btn btn-primary mb-4">Créer un sprint</a>
 
     <h3 class="text-xl font-semibold mt-8 mb-4">Vos sprints :</h3>
     <ul class="space-y-2">
         @forelse($project->sprints as $sprint)
             <li>
-                <a href="{{ route('sprints.show', ['project' => $project->id, 'sprint' => $sprint->id]) }}" class="hover:underline text-[#0CBABA]">
+                <a href="{{ route('projects.sprints.show', ['project' => $project->id, 'sprint' => $sprint->id]) }}" class="hover:underline text-[#0CBABA]">
                     <strong>{{ $sprint->nom }}</strong> - Du {{ $sprint->begining }} au {{ $sprint->end }}
                 </a>
             </li>
