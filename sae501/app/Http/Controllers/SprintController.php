@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\Sprint;
 use App\Models\Task;
+use App\Models\Epic;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -55,10 +56,12 @@ class SprintController extends Controller
     $project = Project::findOrFail($projectId);
     $sprint = Sprint::where('project_id', $projectId)
         ->where('id', $sprintId)
-        ->with('tasks')
+        ->with(['tasks', 'epics.tasks'])
         ->firstOrFail();
 
     $tasks = $sprint->tasks ?? collect();
+    $epics = $sprint->epics ?? collect();
+
     $normalized = $tasks->map(function ($t) {
         $raw = $t->statut ?? '';
         $raw = trim(mb_strtolower($raw));
@@ -68,6 +71,7 @@ class SprintController extends Controller
         }
         return $raw;
     });
+
     $counts = $normalized->countBy()->toArray();
     $todo = $counts['a faire'] ?? 0;
     $inProgress = $counts['en cours'] ?? 0;
@@ -75,7 +79,18 @@ class SprintController extends Controller
     $total = $tasks->count();
     $progress = $total > 0 ? round(($done / $total) * 100, 1) : 0;
 
-    return view('sprints.show', compact('project', 'sprint', 'tasks', 'done', 'inProgress', 'todo', 'total', 'progress'));
+    return view('sprints.show', compact(
+        'project',
+        'sprint',
+        'tasks',
+        'epics',
+        'done',
+        'inProgress',
+        'todo',
+        'total',
+        'progress'
+    ));
 }
+
 
 }

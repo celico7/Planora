@@ -8,6 +8,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\SprintController;
+use App\Http\Controllers\EpicController;
 
 //email de verif
 use Illuminate\Support\Facades\Mail;
@@ -71,23 +72,20 @@ Route::get('/simulate-mail', function () {
     return $mail->render();
 })->middleware('auth');
 
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('projects', ProjectController::class);
 });
 
 Route::prefix('projects/{project}')->group(function () {
-    // Routes sprints
-    Route::resource('sprints', SprintController::class);
-    Route::get('sprints/{sprint}', [SprintController::class, 'show'])->name('sprints.show');
-
-    // Routes pour les tâches d’un sprint
-    Route::prefix('sprints/{sprint}')->group(function () {
-        Route::get('tasks/create', [TaskController::class, 'create'])->name('tasks.create'); // Formulaire création
-        Route::post('tasks', [TaskController::class, 'store'])->name('tasks.store'); // Création réelle
-        Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index'); // Liste des tâches
-    });
-    
+    Route::resource('sprints', SprintController::class); 
 });
+
+// Déclaration indépendante des epics
+Route::resource('projects.sprints.epics', EpicController::class);
+Route::resource('projects.sprints', SprintController::class)->scoped();
+Route::resource('projects.sprints.epics.tasks', TaskController::class)->scoped();
+
 
 
 

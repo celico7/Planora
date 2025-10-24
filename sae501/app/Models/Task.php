@@ -17,9 +17,12 @@ class Task extends Model
         'priorite',
     ];
 
-    public function sprint()
-    {
-        return $this->belongsTo(Sprint::class);
+    public function sprint() {
+    return $this->belongsTo(Sprint::class);
+    }
+
+    public function epic() {
+        return $this->belongsTo(Epic::class);
     }
 
     public function project()

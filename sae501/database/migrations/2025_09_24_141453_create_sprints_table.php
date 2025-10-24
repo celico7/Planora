@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::create('sprints', function (Blueprint $table) {
-        $table->id();
-        $table->foreignId('project_id')->constrained('projects');
-        $table->string('nom');
-        $table->date('begining');
-        $table->date('end');
-        $table->enum('statut', ['prévu', 'en cours', 'terminé']);
-        $table->timestamps();
+    Schema::create('epics', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('project_id')->constrained('projects');
+    $table->foreignId('sprint_id')->nullable()->constrained('sprints');
+    $table->string('nom');
+    $table->text('description');
+    $table->date('begining');
+    $table->date('end');
+    $table->enum('statut', ['prévu', 'en cours', 'terminé']);
+    $table->timestamps();
     });
+
 }
 
     /**

@@ -17,4 +17,9 @@ class Sprint extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function epics()
+{
+    return $this->hasMany(\App\Models\Epic::class);
+}
 }

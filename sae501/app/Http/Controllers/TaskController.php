@@ -5,53 +5,44 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Sprint;
 use App\Models\Project;
+use App\Models\Epic;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    // Affiche le formulaire de création
-    public function create($projectId, $sprintId)
-    {
-        $project = Project::findOrFail($projectId);
-        $sprint = Sprint::findOrFail($sprintId);
 
-        return view('tasks.create', compact('project', 'sprint'));
+    public function create(Project $project, Sprint $sprint, Epic $epic)
+    {
+        return view('tasks.create', compact('project', 'sprint', 'epic'));
     }
 
-    // Crée la tâche dans la BDD
-    public function store(Request $request, $projectId, $sprintId)
-{
-    // Validation des données envoyées par le formulaire
-    $validated = $request->validate([
-        'nom' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'statut' => 'required|in:à faire,en cours,terminé',
-        'responsable_id' => 'required|exists:users,id',
-        'echeance' => 'required|date',
-        'priorite' => 'required|in:basse,moyenne,haute',
-    ]);
 
-    // Associer la tâche au sprint
-    $validated['sprint_id'] = $sprintId;
+    public function store(Project $project, Sprint $sprint, Epic $epic, Request $request)
+    {
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'statut' => 'required|in:à faire,en cours,terminé',
+            'priorite' => 'required|string|max:255',
+            'echeance' => 'required|date',
+            'responsable_id' => 'nullable|exists:users,id',
+        ]);
 
-    // Création de la tâche dans la base
-    Task::create([
-        'nom' => $validated['nom'],
-        'description' => $validated['description'] ?? null,
-        'statut' => $validated['statut'],
-        'priorite' => $validated['priorite'],
-        'echeance' => $validated['echeance'],
-        'responsable_id' => $validated['responsable_id'],
-        'sprint_id' => $validated['sprint_id'],
-    ]);
+        $task = Task::create([
+            'nom' => $validated['nom'],
+            'description' => $validated['description'],
+            'statut' => $validated['statut'],
+            'priorite' => $validated['priorite'],
+            'echeance' => $validated['echeance'],
+            'project_id' => $project->id,
+            'sprint_id' => $sprint->id,
+            'epic_id' => $epic->id,
+            'responsable_id' => $validated['responsable_id'] ?? null,
+        ]);
 
-    // Rediriger vers la page du sprint (pour voir la progression à jour et la liste des tâches)
-    return redirect()->route('sprints.show', [
-        'project' => $projectId,
-        'sprint' => $sprintId
-    ])->with('success', 'Tâche créée avec succès !');
-}
-
+        return redirect()->route('sprints.show', [$project, $sprint])
+            ->with('success', 'Tâche créée avec succès !');
+    }
 
     // Liste les tâches
     public function index($projectId, $sprintId)
