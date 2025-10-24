@@ -75,18 +75,11 @@ Route::get('/simulate-mail', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('projects', ProjectController::class);
+
+    // Déclaration indépendante des epics
+    Route::resource('projects.sprints.epics', EpicController::class);
+    Route::resource('projects.sprints', SprintController::class)->scoped();
+    Route::resource('projects.sprints.epics.tasks', TaskController::class)->scoped();
 });
-
-//Route::prefix('projects/{project}')->group(function () {
-  //  Route::resource('sprints', SprintController::class); 
-//});
-
-// Déclaration indépendante des epics
-Route::resource('projects.sprints.epics', EpicController::class);
-Route::resource('projects.sprints', SprintController::class)->scoped();
-Route::resource('projects.sprints.epics.tasks', TaskController::class)->scoped();
-
-
-
 
 require __DIR__.'/auth.php';
