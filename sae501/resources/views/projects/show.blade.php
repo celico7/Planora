@@ -21,7 +21,7 @@
     <ul class="space-y-2">
         @forelse($project->sprints as $sprint)
             <li>
-                <a href="{{ route('projects.sprints.show', ['project' => $project->id, 'sprint' => $sprint->id]) }}" class="hover:underline text-[#0CBABA]">
+                <a href="{{ route('projects.sprints.show', ['project' => $project->id, 'sprint' => $sprint->id]) }}" class="hover:underline text-primary">
                     <strong>{{ $sprint->nom }}</strong> - Du {{ $sprint->begining }} au {{ $sprint->end }}
                 </a>
             </li>

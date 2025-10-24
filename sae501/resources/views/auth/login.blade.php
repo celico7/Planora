@@ -18,10 +18,10 @@
     }
     .blob {
         top: -100px;
-        left: -120px;
-        width: 420px;
+        left: -100px;
+        width: 320px;
         height: 420px;
-        background: radial-gradient(circle at 35% 40%, #0CBABA 0%, #38003699 60%, #fff0 95%);
+        background: radial-gradient(circle at 35% 40%, #114f4fff 0%, #38003699 60%, #fff0 95%);
         border-radius: 55% 45% 40% 60%/49% 51% 64% 36%;
         animation: pulse 6s infinite alternate;
     }
@@ -99,7 +99,7 @@
                     <div class="flex justify-between items-center mt-2">
                         <a href="{{ route('register') }}" class="text-sm" style="color:#0CBABA">Créer un compte</a>
                         <button type="submit"
-                            class="bg-[#0CBABA] hover:bg-[#380036] text-white font-semibold px-4 py-2 rounded shadow transition duration-200">
+                            class="bg-[#0CBABA] hover:bg-secondary text-white font-semibold px-4 py-2 rounded shadow transition duration-200">
                             Connexion
                         </button>
                     </div>

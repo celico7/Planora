@@ -21,7 +21,7 @@
         left: -120px;
         width: 420px;
         height: 420px;
-        background: radial-gradient(circle at 35% 40%, #0CBABA 0%, #38003699 60%, #fff0 95%);
+        background: radial-gradient(circle at 35% 40%, #114f4fff 0%, #38003699 60%, #fff0 95%);
         border-radius: 55% 45% 40% 60%/49% 51% 64% 36%;
         animation: pulse 6s infinite alternate;
     }

@@ -19,15 +19,15 @@
 @livewireScripts
 
 <header class="fixed top-0 left-0 z-40 w-full">
-    <div class="bg-[rgba(56,0,54,0.90)] backdrop-blur-sm border-b border-[#0cbaba57] shadow-[0_2px_16px_0_#38003657]">
+    <div class="bg-secondary backdrop-blur-sm border-b border-[#0cbaba57] shadow-[0_2px_16px_0_#38003657]">
         <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-[5rem]">
-            <a href="/" class="text-3xl font-extrabold tracking-wide select-none" style="color:#0CBABA;">
+            <a href="/" class="text-3xl text-primary font-extrabold tracking-wide select-none">
                 Planora
             </a>
             <nav aria-label="Main navigation">
                 <ul class="flex items-center gap-6 text-white">
-                    <li><a href="#" class="hover:text-[#0CBABA] transition">À propos</a></li>
-                    <li><a href="#" class="hover:text-[#0CBABA] transition">Contact</a></li>
+                    <li><a href="#" class="hover:text-primary transition">À propos</a></li>
+                    <li><a href="#" class="hover:text-primary transition">Contact</a></li>
                 </ul>
             </nav>
         </div>
@@ -47,19 +47,19 @@
     aria-label="Sidebar navigation">
     <nav class="flex-1 flex flex-col gap-6 items-center justify-start mt-4">
         <a href="{{ route('projects.create') }}" title="Créer un nouveau projet"
-           class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-[#0CBABA]/80 hover:text-white text-[#380036] transition">
+           class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
             <i class="bi bi-plus-circle-fill text-2xl"></i>
         </a>
-        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-[#0CBABA]/80 hover:text-white text-[#380036] transition">
+        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
             <i class="bi bi-kanban text-2xl"></i>
         </a>
-        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-[#0CBABA]/80 hover:text-white text-[#380036] transition">
+        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
             <i class="bi bi-calendar-event text-2xl"></i>
         </a>
-        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-[#0CBABA]/80 hover:text-white text-[#380036] transition">
+        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
             <i class="bi bi-people-fill text-2xl"></i>
         </a>
-        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-[#0CBABA]/80 hover:text-white text-[#380036] transition">
+        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
             <i class="bi bi-gear-fill text-2xl"></i>
         </a>
 
@@ -68,7 +68,7 @@
             <!-- Bouton profil (placement en bas de la sidebar) -->
             <button 
                 @click="open = !open"
-                class="w-12 h-12 flex items-center justify-center rounded-full mb-2 bg-white/60 shadow-md hover:bg-[#0CBABA]/80 hover:text-white text-[#380036] transition cursor-pointer"
+                class="w-12 h-12 flex items-center justify-center rounded-full mb-2 bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition cursor-pointer"
                 title="Profil"
                 id="btn-profile"
             >
@@ -88,23 +88,23 @@
                 class="fixed left-[6.5rem] bottom-12 min-w-[22rem] w-[22rem] bg-white/95 backdrop-blur-lg shadow-2xl rounded-xl border border-[#0CBABA]/30 z-50"
                 style="min-height: 22rem;">
                 <div class="flex flex-col h-full px-6 py-8 relative">
-                    <button @click="open = false" class="absolute top-4 right-4 text-gray-400 hover:text-[#0CBABA] text-lg">
+                    <button @click="open = false" class="absolute top-4 right-4 text-gray-400 hover:text-primary text-lg">
                         <i class="bi bi-x-lg"></i>
                     </button>
                     @auth
                         <div class="flex flex-col items-center mb-6">
-                            <i class="bi bi-person-circle text-6xl text-[#0CBABA] mb-2"></i>
+                            <i class="bi bi-person-circle text-6xl text-primary mb-2"></i>
                             <div class="font-semibold text-xl mb-1">{{ Auth::user()->name }}</div>
                             <div class="text-gray-600 text-sm">{{ Auth::user()->email }}</div>
                         </div>
                         <ul class="space-y-2">
                             <li>
-                                <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded hover:bg-[#0CBABA]/10 hover:text-[#0CBABA] transition font-medium">Mon compte</a>
+                                <a href="{{ route('dashboard') }}" class="block px-4 py-2 rounded hover:bg-primary/10 hover:text-primary transition font-medium">Mon compte</a>
                             </li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="w-full text-left px-4 py-2 rounded hover:bg-[#0CBABA]/10 hover:text-[#0CBABA] transition font-medium">
+                                    <button type="submit" class="w-full text-left px-4 py-2 rounded hover:bg-primary/10 hover:text-primary transition font-medium">
                                         Se déconnecter
                                     </button>
                                 </form>
@@ -113,8 +113,8 @@
                     @endauth
                     @guest
                         <div class="text-center mt-16">
-                            <a href="{{ route('login') }}" class="block px-4 py-2 mb-2 rounded bg-[#0CBABA] text-white font-medium hover:bg-[#380036] transition">Se connecter</a>
-                            <a href="{{ route('register') }}" class="block px-4 py-2 rounded bg-gray-200 hover:bg-[#0CBABA]/20 text-[#380036] font-medium transition">S'inscrire</a>
+                            <a href="{{ route('login') }}" class="block px-4 py-2 mb-2 rounded bg-primary text-white font-medium hover:bg-primary/80 transition">Se connecter</a>
+                            <a href="{{ route('register') }}" class="block px-4 py-2 rounded bg-gray-200 hover:bg-primary/20 text-primary font-medium transition">S'inscrire</a>
                         </div>
                     @endguest
                 </div>
