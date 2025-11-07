@@ -51,14 +51,16 @@ class SprintController extends Controller
             ->with('success', 'Sprint créé');
     }
 
-    public function show($projectId, $sprintId)
+    public function show(Project $project, Sprint $sprint)
 {
-    $project = Project::findOrFail($projectId);
-    $sprint = Sprint::where('project_id', $projectId)
-        ->where('id', $sprintId)
-        ->with(['tasks', 'epics.tasks'])
-        ->firstOrFail();
+    // Vérifier que le sprint appartient bien au projet
+    if ($sprint->project_id !== $project->id) {
+        abort(404);
+    }
 
+    // Charger les relations
+    $sprint->load(['tasks', 'epics.tasks']);
+    
     $tasks = $sprint->tasks ?? collect();
     $epics = $sprint->epics ?? collect();
 
@@ -91,6 +93,19 @@ class SprintController extends Controller
         'progress'
     ));
 }
+
+
+public function kanban(Project $project, Sprint $sprint)
+{
+    // Vérifie que le sprint appartient bien au projet
+    if ($sprint->project_id !== $project->id) {
+        abort(404);
+    }
+
+    return view('sprints.kanban', compact('project', 'sprint'));
+}
+
+
 
 
 }

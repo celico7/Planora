@@ -69,14 +69,19 @@ Route::get('/simulate-mail', function () {
     return $mail->render();
 })->middleware('auth');
 
-
+//routes protégées
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('projects', ProjectController::class);
 
-    // Déclaration indépendante des epics
-    Route::resource('projects.sprints.epics', EpicController::class);
-    Route::resource('projects.sprints', SprintController::class)->scoped();
-    Route::resource('projects.sprints.epics.tasks', TaskController::class)->scoped();
+    Route::scopeBindings()->group(function () {
+        Route::resource('projects.sprints.epics', EpicController::class);
+        Route::resource('projects.sprints', SprintController::class);
+        Route::resource('projects.sprints.epics.tasks', TaskController::class);
+        
+    });
+    Route::get('/projects/{project}/sprints/{sprint}/kanban', [SprintController::class, 'kanban'])
+            ->name('projects.sprints.kanban');
 });
+
 
 require __DIR__.'/auth.php';

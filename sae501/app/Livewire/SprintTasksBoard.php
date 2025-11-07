@@ -9,29 +9,36 @@ use App\Models\Task;
 
 class SprintTasksBoard extends Component
 {
-    public $sprint;
+    public $sprintId;
     public $epics;
     public $showStatutDropdown = [];
     public $showPrioriteDropdown = [];
 
     protected $listeners = ['taskUpdated' => '$refresh'];
 
-    public function mount(Sprint $sprint)
+    public function mount($sprintId) 
     {
-        $this->sprint = $sprint;
-        $this->epics = $sprint->epics()->with('tasks')->get();
+        $this->sprintId = $sprintId;
+        
+        // Charger les epics du sprint
+        $this->epics = Epic::where('sprint_id', $this->sprintId)
+            ->with('tasks')
+            ->get();
     }
 
     public function updateTask($taskId, $field, $value)
     {
-        $task = \App\Models\Task::findOrFail($taskId);
+        $task = Task::findOrFail($taskId);
         $task->{$field} = $value;
         $task->save();
 
-        $this->closeDropdown($field, $taskId); 
-        //$this->emit('taskUpdated');
+        $this->closeDropdown($field, $taskId);
+        
+        // Recharger les epics pour mettre à jour l'affichage
+        $this->epics = Epic::where('sprint_id', $this->sprintId)
+            ->with('tasks')
+            ->get();
     }
-
 
     public function closeDropdown($type, $taskId)
     {
@@ -42,10 +49,8 @@ class SprintTasksBoard extends Component
         }
     }
 
-
     public function render()
     {
         return view('livewire.sprint-tasks-board');
     }
 }
-
