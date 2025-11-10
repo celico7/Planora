@@ -4,19 +4,45 @@
     <div class="flex flex-col gap-6 min-w-[18rem] max-w-[18rem] flex-shrink-0">
         @foreach($epics as $epic)
             <div class="bg-gray-50 rounded-lg shadow p-4 border border-primary">
-                <div class="flex justify-between items-center cursor-pointer" wire:click="toggleEpic({{ $epic->id }})">
-                    <h2 class="font-bold text-lg text-primary mb-0 text-center flex-1">{{ $epic->nom }}</h2>
-                    <button>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2 cursor-pointer" wire:click="toggleEpic({{ $epic->id }})">
+                        <h2 class="font-bold text-lg text-primary mb-0 text-center">{{ $epic->nom }}</h2>
                         @if($openEpicId === $epic->id)
                             <i class="bi bi-chevron-up text-2xl"></i>
                         @else
                             <i class="bi bi-chevron-down text-2xl"></i>
                         @endif
-                    </button>
+                    </div>
+                    <!-- Menu 3 points Épic -->
+                    <div class="relative group">
+                        <button class="p-2 rounded hover:bg-gray-200" onclick="event.stopPropagation(); this.nextElementSibling.classList.toggle('hidden');">
+                            <i class="bi bi-three-dots-vertical text-xl"></i>
+                        </button>
+                        <div class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-30 group-hover:block">
+                            <form method="POST" action="{{ route('projects.sprints.epics.destroy', [
+                                'project' => $epic->project_id,
+                                'sprint' => $epic->sprint_id,
+                                'epic'    => $epic->id]) }}"
+                                onsubmit="return confirm('Supprimer cet epic ?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="w-full text-left text-red-600 px-4 py-2">
+                                    <i class="bi bi-trash mr-1"></i> Supprimer l'épic
+                                </button>
+                            </form>
+                            <a href="{{ route('projects.sprints.epics.edit', [
+                                'project' => $epic->project_id,
+                                'sprint' => $epic->sprint_id,
+                                'epic' => $epic->id]) }}"
+                               class="w-full text-left text-gray-600 px-4 py-2 flex items-center hover:bg-gray-100">
+                                <i class="bi bi-pencil mr-1"></i> Modifier l'épic
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 @if($openEpicId === $epic->id)
                     <div class="transition-all duration-300 ease-in-out mt-4">
-                        <div class="flex flex-col gap-2 items-center mb-2">
+                        <div class="flex flex-row justify-center gap-2 items-center mb-2">
                             <span class="inline-flex items-center px-2 py-1 rounded bg-gray-200 text-xs font-medium text-gray-700">
                                 <i class="bi bi-list-check mr-1"></i>{{ $epic->tasks->count() }} tâches
                             </span>

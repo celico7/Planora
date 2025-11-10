@@ -20,7 +20,7 @@
 </ul>
 
 <x-secondary-button>
-    <a  href="{{ route('sprints.create', $project->id) }}"> Créer un sprint</a>
+    <a  href="{{ route('projects.sprints.create', $project->id) }}"> Créer un sprint</a>
 </x-secondary-button>
 
 <h3>

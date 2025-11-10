@@ -14,7 +14,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::where('chef_projet', Auth::id())->get();
-        return view('projects.index', compact('projects'));
+        return view('projects.show', compact('projects'));
     }
 
     /**
@@ -47,7 +47,7 @@ class ProjectController extends Controller
     $project->users()->attach(auth()->id(), ['role' => 'admin']);
 
     // Redirection vers la liste des projets + creation projets
-    return redirect()->route('projects.index')->with('success', 'Projet créé avec succès !');
+    return redirect()->route('projects.show')->with('success', 'Projet créé avec succès !');
 }
 
 
@@ -93,7 +93,7 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
-        return redirect()->route('projects.index', $project)
+        return redirect()->route('projects.show', $project)
                          ->with('success', 'Projet mis à jour avec succès !');
     }
 

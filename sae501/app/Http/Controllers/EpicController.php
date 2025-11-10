@@ -43,7 +43,7 @@ class EpicController extends Controller
             'sprint_id' => $sprint->id,   // liaison automatique ici
         ]);
 
-        return redirect()->route('sprints.show', [$project, $sprint])
+        return redirect()->route('projects.sprints.show', [$project, $sprint])
             ->with('success', 'Epic créé !');
     }
 
@@ -51,17 +51,17 @@ class EpicController extends Controller
 
 
 
-    public function show(Project $project, Epic $epic)
+    public function show(Project $project, Sprint $sprint, Epic $epic)
     {
         return view('epics.show', compact('epic', 'project'));
     }
 
-    public function edit(Project $project, Epic $epic)
+    public function edit(Project $project, Sprint $sprint, Epic $epic)
     {
-        return view('epics.edit', compact('epic', 'project'));
+        return view('epics.edit', compact('project', 'sprint', 'epic'));
     }
 
-    public function update(Request $request, Project $project, Epic $epic)
+    public function update(Request $request, Project $project, Sprint $sprint, Epic $epic)
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
@@ -73,12 +73,12 @@ class EpicController extends Controller
 
         $epic->update($validated);
 
-        return redirect()->route('projects.show', $project)->with('success', 'Epic modifié !');
+        return redirect()->route('projects.sprints.show', [$project, $sprint])->with('success', 'Epic modifié !');
     }
 
-    public function destroy(Project $project, Epic $epic)
+    public function destroy(Project $project, Sprint $sprint, Epic $epic)
     {
         $epic->delete();
-        return redirect()->route('projects.show', $project)->with('success', 'Epic supprimé !');
+        return redirect()->route('projects.sprints.show', [$project, $sprint])->with('success', 'Epic supprimé !');
     }
 }

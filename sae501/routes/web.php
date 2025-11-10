@@ -76,11 +76,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::scopeBindings()->group(function () {
         Route::resource('projects.sprints.epics', EpicController::class);
         Route::resource('projects.sprints', SprintController::class);
-        Route::resource('projects.sprints.epics.tasks', TaskController::class);
-        
+        Route::resource('projects.sprints.epics.tasks', TaskController::class);        
     });
-    Route::get('/projects/{project}/sprints/{sprint}/kanban', [SprintController::class, 'kanban'])
-            ->name('projects.sprints.kanban');
 });
 
 

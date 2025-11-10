@@ -47,7 +47,7 @@ class SprintController extends Controller
             'end' => $end_date,
         ]);
 
-        return redirect()->route('projects.index', $project)
+        return redirect()->route('projects.show', $project)
             ->with('success', 'Sprint créé');
     }
 
@@ -95,16 +95,49 @@ class SprintController extends Controller
 }
 
 
-public function kanban(Project $project, Sprint $sprint)
-{
-    // Vérifie que le sprint appartient bien au projet
-    if ($sprint->project_id !== $project->id) {
-        abort(404);
+    public function kanban(Project $project, Sprint $sprint)
+    {
+        // Vérifie que le sprint appartient bien au projet
+        if ($sprint->project_id !== $project->id) {
+            abort(404);
+        }
+
+        return view('sprints.kanban', compact('project', 'sprint'));
     }
 
-    return view('sprints.kanban', compact('project', 'sprint'));
-}
+    public function destroy(Project $project, Sprint $sprint)
+    {
+        // Supprime le sprint
+        $sprint->delete();
 
+        return redirect()->route('projects.show', $project)->with('success', 'Sprint supprimé avec succès !');
+    }
+
+    /**
+     * Formulaire d’édition d’un sprint
+     */
+    public function edit(Project $project, Sprint $sprint)
+    {
+        return view('sprints.edit', compact('project', 'sprint'));
+    }
+
+    /**
+     * Met à jour un projet
+     */
+    public function update(Request $request, Project $project, Sprint $sprint)
+    {
+
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'begining' => 'required|date',
+            'end' => 'required|date|after_or_equal:begining',
+        ]);
+
+        $sprint->update($validated);
+
+        return redirect()->route('projects.sprints.show', [$project->id, $sprint->id])
+                        ->with('success', 'Sprint mis à jour avec succès !');
+    }
 
 
 
