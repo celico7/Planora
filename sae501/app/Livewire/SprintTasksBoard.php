@@ -49,6 +49,41 @@ class SprintTasksBoard extends Component
         }
     }
 
+    private function kanbanColumns()
+    {
+        // Combine toutes les tâches de tous les epics du sprint
+        $allTasks = collect();
+        foreach ($this->epics as $epic) {
+            $allTasks = $allTasks->merge($epic->tasks);
+        }
+
+        // On prépare un tableau associatif avec les colonnes du Kanban
+        $kanban = [
+            'à faire' => collect(),
+            'en cours' => collect(),
+            'terminé' => collect(),
+        ];
+
+        foreach ($allTasks as $task) {
+            $statut = mb_strtolower(trim($task->statut));
+            if (in_array($statut, ['à faire', 'a faire', 'todo'])) $statut = 'à faire';
+            elseif (in_array($statut, ['en cours', 'en-cours', 'doing', 'in progress'])) $statut = 'en cours';
+            elseif (in_array($statut, ['terminé', 'termine', 'fait', 'done'])) $statut = 'terminé';
+            else $statut = 'à faire';
+            $kanban[$statut]->push($task);
+        }
+
+        return $kanban;
+    }
+
+    public $openEpicId = null;
+
+    public function toggleEpic($epicId)
+    {
+        $this->openEpicId = $this->openEpicId === $epicId ? null : $epicId;
+    }
+
+
     public function render()
     {
         return view('livewire.sprint-tasks-board');

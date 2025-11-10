@@ -13,14 +13,11 @@
         </a>
         
         @if($sprint->epics()->count() > 0)
-        <a href="{{ route('projects.sprints.kanban', ['project' => $project->id, 'sprint' => $sprint->id]) }}"
-            class="px-4 py-2 rounded bg-primary shadow hover:bg-primary/90 text-white transition">
-            <i class="bi bi-kanban-fill mr-1"></i>Vue Kanban
-        </a>
+        
         @endif
     </div>
 
-    <h3>Vue spécifique par Epics :</h3>
+    <h3>Vue spécifique par Epics + Kanban :</h3>
 
     @if($sprint->epics()->count() > 0)
         @livewire('sprint-tasks-board', ['sprintId' => $sprint->id])
@@ -34,12 +31,6 @@
             </a>
         </div>
     @endif
-
-    <hr class="my-10">
-
-    <h3 class="text-xl font-bold mb-4 flex items-center">
-        <i class="bi bi-kanban-fill mr-2"></i> Tableau Kanban global du sprint
-    </h3>
     
 </div>
 
