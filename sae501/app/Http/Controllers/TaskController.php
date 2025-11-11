@@ -40,8 +40,37 @@ class TaskController extends Controller
             'responsable_id' => $validated['responsable_id'] ?? null,
         ]);
 
-        return redirect()->route('sprints.show', [$project, $sprint])
+        return redirect()->route('projects.sprints.show', [$project, $sprint])
             ->with('success', 'Tâche créée avec succès !');
+    }
+
+    public function edit(Project $project, Sprint $sprint, Epic $epic, Task $task)
+    {
+        return view('tasks.edit', compact('project', 'sprint', 'epic', 'task'));
+    }
+
+    public function update(Request $request, Project $project, Sprint $sprint, Epic $epic, Task $task)
+    {
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'statut' => 'required|in:à faire,en cours,terminé',
+            'priorite' => 'required|string|max:255',
+            'echeance' => 'required|date',
+            'responsable_id' => 'nullable|exists:users,id',
+        ]);
+
+        $task->update([
+            'nom' => $validated['nom'],
+            'description' => $validated['description'],
+            'statut' => $validated['statut'],
+            'priorite' => $validated['priorite'],
+            'echeance' => $validated['echeance'],
+            'responsable_id' => $validated['responsable_id'] ?? null,
+        ]);
+
+        return redirect()->route('projects.sprints.show', [$project->id, $sprint->id])
+            ->with('success', 'Tâche mise à jour avec succès !');
     }
 
     // Liste les tâches
@@ -53,5 +82,13 @@ class TaskController extends Controller
         return view('tasks.index', compact('sprint', 'tasks', 'projectId'));
     }
 
-    
+    public function destroy(Project $project, Sprint $sprint, Epic $epic, Task $task)
+    {
+        $task->delete();
+
+        return redirect()->route('projects.sprints.show', [$project, $sprint])
+            ->with('success', 'Tâche supprimée avec succès !');
+    }
+
+
 }

@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Planora</title>
     @livewireStyles
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script src="//unpkg.com/alpinejs" defer></script>
@@ -42,7 +43,7 @@
 
 @if (!request()->routeIs('login') && !request()->routeIs('register'))
 <!-- Sidebar + Drawer Alpine -->
-<aside 
+<aside
     class="rounded-tr-lg fixed top-20 left-0 z-20 flex flex-col items-center gap-6 w-20 h-[calc(100vh-5rem)] bg-gradient-to-b from-[#380036] via-[#380036]/70 to-[#0CBABA]/45 shadow-xl py-6 backdrop-blur-lg overflow-visible"
     aria-label="Sidebar navigation">
     <nav class="flex-1 flex flex-col gap-6 items-center justify-start mt-4">
@@ -66,7 +67,7 @@
 <!-- Drawer Profil global -->
         <div x-data="{ open: false }" class="relative flex flex-col items-center">
             <!-- Bouton profil (placement en bas de la sidebar) -->
-            <button 
+            <button
                 @click="open = !open"
                 class="w-12 h-12 flex items-center justify-center rounded-full mb-2 bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition cursor-pointer"
                 title="Profil"
@@ -76,8 +77,8 @@
             </button>
 
             <!-- Drawer positionné selon la zone rouge -->
-            <div 
-                x-show="open" 
+            <div
+                x-show="open"
                 @click.outside="open = false"
                 x-transition:enter="transition transform ease-out duration-300"
                 x-transition:enter-start="-translate-x-8 opacity-0"

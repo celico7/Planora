@@ -16,10 +16,10 @@ class SprintTasksBoard extends Component
 
     protected $listeners = ['taskUpdated' => '$refresh'];
 
-    public function mount($sprintId) 
+    public function mount($sprintId)
     {
         $this->sprintId = $sprintId;
-        
+
         // Charger les epics du sprint
         $this->epics = Epic::where('sprint_id', $this->sprintId)
             ->with('tasks')
@@ -33,7 +33,7 @@ class SprintTasksBoard extends Component
         $task->save();
 
         $this->closeDropdown($field, $taskId);
-        
+
         // Recharger les epics pour mettre à jour l'affichage
         $this->epics = Epic::where('sprint_id', $this->sprintId)
             ->with('tasks')
@@ -83,9 +83,15 @@ class SprintTasksBoard extends Component
         $this->openEpicId = $this->openEpicId === $epicId ? null : $epicId;
     }
 
+    public function openTask($taskId)
+    {
+        $this->dispatch('openTaskModal', taskId: $taskId);
+    }
 
     public function render()
     {
         return view('livewire.sprint-tasks-board');
     }
+
+
 }

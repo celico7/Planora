@@ -1,6 +1,6 @@
 <div class="flex gap-6 overflow-x-auto py-4 w-full">
 
-    {{-- Colonne unique pour toutes les Epics, empilées --}} 
+    {{-- Colonne unique pour toutes les Epics, empilées --}}
     <div class="flex flex-col gap-6 min-w-[18rem] max-w-[18rem] flex-shrink-0">
         @foreach($epics as $epic)
             <div class="bg-gray-50 rounded-lg shadow p-4 border border-primary">
@@ -60,7 +60,8 @@
                         <p class="mb-4 font-semibold text-gray-400 flex gap-2 justify-center">{{ $epic->begining }} → {{ $epic->end }}</p>
                         <div class="flex flex-col gap-3 flex-1">
                             @forelse($epic->tasks as $task)
-                                <div class="bg-white border border-gray-200 shadow-sm rounded-lg p-3 text-sm flex flex-col gap-2 hover:shadow-md transition-shadow">
+                                <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2 hover:shadow-lg transition-shadow cursor-pointer"
+                                     wire:click="openTask({{ $task->id }})">
                                     <div class="font-semibold text-secondary">{{ $task->nom }}</div>
                                     <div class="text-xs text-gray-500">{{ $task->description }}</div>
                                     <div class="flex flex-col gap-2">
@@ -165,7 +166,8 @@
                 </h2>
                 <div class="flex flex-col gap-3 flex-1">
                     @forelse($kanban[$statut] as $task)
-                        <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2 hover:shadow-lg transition-shadow">
+                        <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2 hover:shadow-lg transition-shadow cursor-pointer"
+                             wire:click="openTask({{ $task->id }})">
                             <span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-primary/10 text-primary border border-primary/30">
                                 <i class="bi bi-bookmark-fill mr-1"></i>
                                 {{ isset($task->epic) && $task->epic ? $task->epic->nom : 'Sans epic' }}
@@ -184,4 +186,5 @@
             </div>
         @endforeach
     </div>
+    @livewire('task-modal')
 </div>
