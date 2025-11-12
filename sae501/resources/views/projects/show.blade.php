@@ -45,7 +45,7 @@
                             <i class="bi bi-kanban-fill mr-2"></i>
                             <span>Vue Kanban</span>
                         </a>
-                        <a href="#" class="flex items-center space-x-1 rounded px-4 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 text-sm font-semibold shadow transition opacity-60 cursor-not-allowed" title="À venir !">
+                        <a href="{{ route('projects.roadmap', $project->id) }}" class="flex items-center space-x-1 rounded px-4 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 text-sm font-semibold shadow transition opacity-60">
                             <i class="bi bi-calendar-event mr-2"></i>
                             <span>Roadmap</span>
                         </a>

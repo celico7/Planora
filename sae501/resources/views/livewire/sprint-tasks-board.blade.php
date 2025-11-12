@@ -1,12 +1,40 @@
 <div class="flex gap-6 overflow-x-auto py-4 w-full">
 
-    {{-- Colonne unique pour toutes les Epics, empilées --}} 
+    @php
+        // Palette de couleurs (modifie selon préférence)
+        $palette = ['#0CBABA','#380036','#F59E0B','#EF4444','#10B981','#6366F1','#EC4899','#8B5CF6','#14B8A6','#DB2777'];
+        $epicColors = [];
+        foreach($epics as $i => $epic) {
+            $epicColors[$epic->id] = $palette[$i % count($palette)];
+        }
+        // Fonction utilitaire contraste (simple seuil)
+        function epicTextColor($hex) {
+            $hex = str_replace('#','',$hex);
+            $r = hexdec(substr($hex,0,2));
+            $g = hexdec(substr($hex,2,2));
+            $b = hexdec(substr($hex,4,2));
+            // luminance approximative
+            $l = (0.299*$r + 0.587*$g + 0.114*$b);
+            return $l > 150 ? '#111827' : '#ffffff';
+        }
+    @endphp
+
+    {{-- Colonne unique pour toutes les Epics, empilées --}}
     <div class="flex flex-col gap-6 min-w-[18rem] max-w-[18rem] flex-shrink-0">
         @foreach($epics as $epic)
-            <div class="bg-gray-50 rounded-lg shadow p-4 border border-primary">
+            @php
+                $c = $epicColors[$epic->id];
+                $titleColor = epicTextColor($c);
+            @endphp
+            <div class="bg-gray-50 rounded-lg shadow p-4 border"
+                 style="border-color: {{ $c }}; box-shadow: 0 0 0 1px {{ $c }}22, 0 4px 12px -2px #00000011;">
                 <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-2 cursor-pointer" wire:click="toggleEpic({{ $epic->id }})">
-                        <h2 class="font-bold text-lg text-primary mb-0 text-center">{{ $epic->nom }}</h2>
+                    <div class="flex items-center gap-2 cursor-pointer"
+                         wire:click="toggleEpic({{ $epic->id }})">
+                        <h2 class="font-bold text-lg mb-0 text-center px-3 py-1 rounded"
+                            style="background: {{ $c }}; color: {{ $titleColor }};">
+                            {{ $epic->nom }}
+                        </h2>
                         @if($openEpicId === $epic->id)
                             <i class="bi bi-chevron-up text-2xl"></i>
                         @else
@@ -15,15 +43,17 @@
                     </div>
                     <!-- Menu 3 points Épic -->
                     <div class="relative group">
-                        <button class="p-2 rounded hover:bg-gray-200" onclick="event.stopPropagation(); this.nextElementSibling.classList.toggle('hidden');">
+                        <button class="p-2 rounded hover:bg-gray-200"
+                                onclick="event.stopPropagation(); this.nextElementSibling.classList.toggle('hidden');">
                             <i class="bi bi-three-dots-vertical text-xl"></i>
                         </button>
                         <div class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-30 group-hover:block">
-                            <form method="POST" action="{{ route('projects.sprints.epics.destroy', [
-                                'project' => $epic->project_id,
-                                'sprint' => $epic->sprint_id,
-                                'epic'    => $epic->id]) }}"
-                                onsubmit="return confirm('Supprimer cet epic ?');">
+                            <form method="POST"
+                                  action="{{ route('projects.sprints.epics.destroy', [
+                                    'project' => $epic->project_id,
+                                    'sprint' => $epic->sprint_id,
+                                    'epic'    => $epic->id]) }}"
+                                  onsubmit="return confirm('Supprimer cet epic ?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="w-full text-left text-red-600 px-4 py-2">
@@ -60,10 +90,16 @@
                         <p class="mb-4 font-semibold text-gray-400 flex gap-2 justify-center">{{ $epic->begining }} → {{ $epic->end }}</p>
                         <div class="flex flex-col gap-3 flex-1">
                             @forelse($epic->tasks as $task)
-                                <div class="bg-white border border-gray-200 shadow-sm rounded-lg p-3 text-sm flex flex-col gap-2 hover:shadow-md transition-shadow">
-                                    <div class="font-semibold text-secondary">{{ $task->nom }}</div>
+                                <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2 hover:shadow-lg transition-shadow cursor-pointer"
+                                     wire:click="openTask({{ $task->id }})">
+                                    <div class="font-semibold text-secondary mb-1">{{ $task->nom }}</div>
                                     <div class="text-xs text-gray-500">{{ $task->description }}</div>
-                                    <div class="flex flex-col gap-2">
+                                    <div class="flex flex-col gap-2 mt-2">
+                                        <!-- Badge Epic -->
+                                        <span class="inline-block text-[10px] font-semibold tracking-wide px-2 py-1 rounded"
+                                              style="background: {{ $c }}; color: {{ $titleColor }}; border: 1px solid {{ $c }};">
+                                            <i class="bi bi-bookmark-fill mr-1"></i>{{ $epic->nom }}
+                                        </span>
                                         <!-- Dropdown statut -->
                                         <div wire:ignore.self class="relative">
                                             <button class="px-2 py-1 rounded text-xs font-semibold text-white w-full
@@ -165,12 +201,20 @@
                 </h2>
                 <div class="flex flex-col gap-3 flex-1">
                     @forelse($kanban[$statut] as $task)
-                        <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2 hover:shadow-lg transition-shadow">
-                            <span class="inline-block px-2 py-1 rounded text-xs font-semibold bg-primary/10 text-primary border border-primary/30">
+                        @php
+                            $epicId = isset($task->epic) && $task->epic ? $task->epic->id : null;
+                            $badgeColor = $epicId ? $epicColors[$epicId] : '#e5e7eb';
+                            $badgeText = $epicId ? epicTextColor($badgeColor) : '#374151';
+                        @endphp
+                        <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2 hover:shadow-lg transition-shadow cursor-pointer"
+                             wire:click="openTask({{ $task->id }})">
+                            <span class="inline-block px-2 py-1 rounded text-[10px] font-semibold tracking-wide"
+                                  style="background: {{ $badgeColor }}; color: {{ $badgeText }};
+                                         border: 1px solid {{ $badgeColor }};">
                                 <i class="bi bi-bookmark-fill mr-1"></i>
                                 {{ isset($task->epic) && $task->epic ? $task->epic->nom : 'Sans epic' }}
                             </span>
-                            <h3 class="font-semibold text-secondary mb-2">{{ $task->nom ?? 'Sans nom' }}</h3>
+                            <h3 class="font-semibold text-secondary mb-2 mt-2">{{ $task->nom ?? 'Sans nom' }}</h3>
                             <p class="text-xs text-gray-500 mb-3">{{ $task->description ?? '' }}</p>
                             <div class="flex items-center gap-2 text-xs text-gray-500">
                                 <i class="bi bi-calendar-event mr-1"></i> {{ $task->echeance ?? 'Non défini' }}
@@ -184,4 +228,5 @@
             </div>
         @endforeach
     </div>
+    @livewire('task-modal')
 </div>
