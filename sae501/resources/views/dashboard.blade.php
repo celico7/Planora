@@ -16,7 +16,7 @@
 
         <!-- Carte profil utilisateur -->
         <div class="bg-white shadow-md rounded-lg p-8 mb-10 border-t-4 border-primary">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div class="flex flex-row md:flex-row md:items-center md:justify-between gap-6">
                 <div class="flex items-center gap-4">
                     <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0cbaba&color=fff"
                          alt="Avatar"
@@ -71,8 +71,8 @@
         </div>
 
         <!-- Section Bienvenue -->
-        <div class="mt-12 bg-gradient-to-r from-primary to-[#380036] rounded-lg p-8 text-white shadow-lg">
-            <h2 class="text-2xl font-bold mb-3">Bonjour, {{ Auth::user()->name }} 👋</h2>
+        <div class="mt-12 bg-gradient-blue rounded-lg p-8 text-white shadow-lg">
+            <h2 class="text-2xl font-bold mb-3">Bonjour, {{ Auth::user()->name }}</h2>
             <p class="text-lg">Ravi de vous revoir ! Gérez vos projets, sprints et tâches directement depuis votre tableau de bord. Commencez dès maintenant à faire progresser vos objectifs.</p>
         </div>
     </div>
