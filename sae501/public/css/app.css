@@ -1,5 +1,8 @@
 /*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
 @layer properties;
+.pointer-events-none {
+  pointer-events: none;
+}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -110,6 +113,9 @@
 .max-w-\[18rem\] {
   max-width: 18rem;
 }
+.max-w-\[400px\] {
+  max-width: 400px;
+}
 .min-w-\[18rem\] {
   min-width: 18rem;
 }
@@ -119,8 +125,17 @@
 .min-w-\[54rem\] {
   min-width: 54rem;
 }
+.min-w-\[300px\] {
+  min-width: 300px;
+}
+.min-w-full {
+  min-width: 100%;
+}
 .flex-1 {
   flex: 1;
+}
+.flex-shrink {
+  flex-shrink: 1;
 }
 .flex-shrink-0 {
   flex-shrink: 0;
@@ -143,9 +158,6 @@
 .transform {
   transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
 }
-.cursor-not-allowed {
-  cursor: not-allowed;
-}
 .cursor-pointer {
   cursor: pointer;
 }
@@ -154,6 +166,15 @@
 }
 .list-disc {
   list-style-type: disc;
+}
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -164,8 +185,14 @@
 .flex-row {
   flex-direction: row;
 }
+.flex-wrap {
+  flex-wrap: wrap;
+}
 .items-center {
   align-items: center;
+}
+.items-start {
+  align-items: flex-start;
 }
 .justify-between {
   justify-content: space-between;
@@ -267,6 +294,10 @@
   --tw-gradient-position: to bottom in oklab;
   background-image: linear-gradient(var(--tw-gradient-stops));
 }
+.bg-gradient-to-br {
+  --tw-gradient-position: to bottom right in oklab;
+  background-image: linear-gradient(var(--tw-gradient-stops));
+}
 .bg-gradient-to-r {
   --tw-gradient-position: to right in oklab;
   background-image: linear-gradient(var(--tw-gradient-stops));
@@ -294,8 +325,20 @@
 .text-left {
   text-align: left;
 }
+.text-right {
+  text-align: right;
+}
 .text-start {
   text-align: start;
+}
+.text-\[9px\] {
+  font-size: 9px;
+}
+.text-\[10px\] {
+  font-size: 10px;
+}
+.text-\[11px\] {
+  font-size: 11px;
 }
 .text-\[\#0cbaba\] {
   color: #0cbaba;
@@ -375,6 +418,10 @@
   --tw-duration: 300ms;
   transition-duration: 300ms;
 }
+.duration-700 {
+  --tw-duration: 700ms;
+  transition-duration: 700ms;
+}
 .select-none {
   -webkit-user-select: none;
   user-select: none;
@@ -386,10 +433,10 @@
     }
   }
 }
-.hover\:cursor-pointer {
-  &:hover {
+.group-hover\:opacity-100 {
+  &:is(:where(.group):hover *) {
     @media (hover: hover) {
-      cursor: pointer;
+      opacity: 100%;
     }
   }
 }
@@ -425,6 +472,13 @@
   &:hover {
     @media (hover: hover) {
       text-decoration-line: underline;
+    }
+  }
+}
+.hover\:opacity-90 {
+  &:hover {
+    @media (hover: hover) {
+      opacity: 90%;
     }
   }
 }

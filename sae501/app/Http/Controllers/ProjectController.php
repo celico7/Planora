@@ -40,10 +40,10 @@ class ProjectController extends Controller
     $project = Project::create([
         'nom' => $request->nom,
         'description' => $request->description,
-        'chef_projet' => auth()->id(), 
+        'chef_projet' => auth()->id(),
     ]);
 
-    // Ajouter l'utilisateur connecté comme admin 
+    // Ajouter l'utilisateur connecté comme admin
     $project->users()->attach(auth()->id(), ['role' => 'admin']);
 
     // Redirection vers la liste des projets + creation projets
@@ -109,6 +109,12 @@ class ProjectController extends Controller
         $project->delete();
 
         return redirect()->route('projects.index')->with('success', 'Projet supprimé avec succès !');
+    }
+
+    public function roadmap(Project $project)
+    {
+        $project->load('epics'); // Précharge les epics
+        return view('projects.roadmap', compact('project'));
     }
 
 }
