@@ -72,11 +72,12 @@ Route::get('/simulate-mail', function () {
 //routes protégées
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('projects', ProjectController::class);
+    Route::get('projects/{project}/roadmap', [ProjectController::class, 'roadmap'])->name('projects.roadmap');
 
     Route::scopeBindings()->group(function () {
         Route::resource('projects.sprints.epics', EpicController::class);
         Route::resource('projects.sprints', SprintController::class);
-        Route::resource('projects.sprints.epics.tasks', TaskController::class);        
+        Route::resource('projects.sprints.epics.tasks', TaskController::class);
     });
 });
 

@@ -11,9 +11,9 @@
             class="px-4 py-2 rounded bg-white shadow hover:bg-primary/10 text-primary border border-primary/30 transition">
             <i class="bi bi-plus-circle-fill mr-1"></i>Créer un epic
         </a>
-        
+
         @if($sprint->epics()->count() > 0)
-        
+
         @endif
     </div>
 
@@ -31,7 +31,7 @@
             </a>
         </div>
     @endif
-    
+
 </div>
 
 @endsection

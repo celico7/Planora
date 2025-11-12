@@ -6,9 +6,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Planora</title>
     @livewireStyles
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <script src="//unpkg.com/alpinejs" defer></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/frappe-gantt@0.6.1/dist/frappe-gantt.min.css">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
@@ -16,7 +19,6 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col @yield('body-class') relative">
-@livewireScripts
 
 <header class="fixed top-0 left-0 z-40 w-full">
     <div class="bg-secondary backdrop-blur-sm border-b border-[#0cbaba57] shadow-[0_2px_16px_0_#38003657]">
@@ -42,7 +44,7 @@
 
 @if (!request()->routeIs('login') && !request()->routeIs('register'))
 <!-- Sidebar + Drawer Alpine -->
-<aside 
+<aside
     class="rounded-tr-lg fixed top-20 left-0 z-20 flex flex-col items-center gap-6 w-20 h-[calc(100vh-5rem)] bg-gradient-to-b from-[#380036] via-[#380036]/70 to-[#0CBABA]/45 shadow-xl py-6 backdrop-blur-lg overflow-visible"
     aria-label="Sidebar navigation">
     <nav class="flex-1 flex flex-col gap-6 items-center justify-start mt-4">
@@ -66,7 +68,7 @@
 <!-- Drawer Profil global -->
         <div x-data="{ open: false }" class="relative flex flex-col items-center">
             <!-- Bouton profil (placement en bas de la sidebar) -->
-            <button 
+            <button
                 @click="open = !open"
                 class="w-12 h-12 flex items-center justify-center rounded-full mb-2 bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition cursor-pointer"
                 title="Profil"
@@ -76,8 +78,8 @@
             </button>
 
             <!-- Drawer positionné selon la zone rouge -->
-            <div 
-                x-show="open" 
+            <div
+                x-show="open"
                 @click.outside="open = false"
                 x-transition:enter="transition transform ease-out duration-300"
                 x-transition:enter-start="-translate-x-8 opacity-0"
@@ -123,6 +125,62 @@
     </nav>
 </aside>
 @endif
+
+<!-- Charger Frappe Gantt AVANT Livewire -->
+<script>
+    window.ganttLoadedPromise = new Promise((resolve) => {
+        // Liste de CDN fallback
+        const cdnUrls = [
+            'https://cdn.jsdelivr.net/npm/frappe-gantt@0.6.1/dist/frappe-gantt.min.js',
+            'https://unpkg.com/frappe-gantt@0.6.1/dist/frappe-gantt.min.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/frappe-gantt/0.6.1/frappe-gantt.min.js'
+        ];
+
+        let currentCdnIndex = 0;
+
+        function tryLoadScript() {
+            if (currentCdnIndex >= cdnUrls.length) {
+                console.error('❌ Tous les CDN ont échoué');
+                resolve(false);
+                return;
+            }
+
+            const script = document.createElement('script');
+            const url = cdnUrls[currentCdnIndex];
+            console.log(`⏳ Tentative de chargement depuis: ${url}`);
+
+            script.src = url;
+
+            script.onload = () => {
+                console.log(`✅ Script chargé depuis: ${url}`);
+                setTimeout(() => {
+                    if (window.Gantt) {
+                        console.log('✅ Frappe Gantt constructeur disponible');
+                        window.ganttLoaded = true;
+                        resolve(true);
+                    } else {
+                        console.warn(`⚠️ Script chargé mais Gantt indisponible depuis ${url}`);
+                        currentCdnIndex++;
+                        tryLoadScript();
+                    }
+                }, 150);
+            };
+
+            script.onerror = (error) => {
+                console.warn(`⚠️ Échec chargement depuis ${url}:`, error);
+                currentCdnIndex++;
+                tryLoadScript();
+            };
+
+            document.body.appendChild(script);
+        }
+
+        tryLoadScript();
+    });
+</script>
+@livewireScripts
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+@stack('scripts')
 
 </body>
 </html>
