@@ -31,10 +31,18 @@
 
     {{-- Liste des sprints --}}
     <h3 class="text-xl font-semibold mt-8 mb-4">Vos sprints :</h3>
+
+    <div class="mb-4">
+    <a href="{{ route('projects.roadmap', $project->id) }}" class="rounded px-4 py-2 bg-gradient-purple text-white hover:shadow-lg font-semibold shadow transition">
+        <i class="bi bi-calendar-event mr-2"></i>
+                <span>Voir la Roadmap</span>
+            </a>
+    </div>
+
     <ul class="space-y-4">
         @forelse($project->sprints as $sprint)
             <li>
-                <div class="bg-gray-50 rounded shadow-sm flex flex-col md:flex-row md:items-center md:justify-between p-4 border border-gray-200 relative">
+                <div class="bg-gray-50 rounded shadow-sm flex flex-row md:flex-row md:items-center md:justify-between p-4 border border-gray-200 relative">
                     <div>
                         <div class="text-lg font-semibold text-primary mb-1">{{ $sprint->nom }}</div>
                         <div class="text-gray-500 text-sm">Du <span class="font-medium">{{ $sprint->begining }}</span> au <span class="font-medium">{{ $sprint->end }}</span></div>
@@ -44,10 +52,6 @@
                         class="flex items-center space-x-1 rounded px-4 py-2 bg-primary text-white hover:bg-primary/80 text-sm font-semibold shadow transition">
                             <i class="bi bi-kanban-fill mr-2"></i>
                             <span>Vue Kanban</span>
-                        </a>
-                        <a href="{{ route('projects.roadmap', $project->id) }}" class="flex items-center space-x-1 rounded px-4 py-2 bg-gray-200 text-gray-700 hover:bg-gray-300 text-sm font-semibold shadow transition opacity-60">
-                            <i class="bi bi-calendar-event mr-2"></i>
-                            <span>Roadmap</span>
                         </a>
                         <!-- Bouton menu Sprint -->
                         <div class="relative group">

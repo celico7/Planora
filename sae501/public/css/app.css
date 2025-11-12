@@ -1,8 +1,5 @@
 /*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */
 @layer properties;
-.pointer-events-none {
-  pointer-events: none;
-}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -134,9 +131,6 @@
 .flex-1 {
   flex: 1;
 }
-.flex-shrink {
-  flex-shrink: 1;
-}
 .flex-shrink-0 {
   flex-shrink: 0;
 }
@@ -155,6 +149,12 @@
   --tw-scale-z: 100%;
   scale: var(--tw-scale-x) var(--tw-scale-y);
 }
+.scale-105 {
+  --tw-scale-x: 105%;
+  --tw-scale-y: 105%;
+  --tw-scale-z: 105%;
+  scale: var(--tw-scale-x) var(--tw-scale-y);
+}
 .transform {
   transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
 }
@@ -167,14 +167,8 @@
 .list-disc {
   list-style-type: disc;
 }
-.grid-cols-1 {
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-}
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.grid-cols-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -331,14 +325,8 @@
 .text-start {
   text-align: start;
 }
-.text-\[9px\] {
-  font-size: 9px;
-}
 .text-\[10px\] {
   font-size: 10px;
-}
-.text-\[11px\] {
-  font-size: 11px;
 }
 .text-\[\#0cbaba\] {
   color: #0cbaba;
@@ -440,6 +428,16 @@
     }
   }
 }
+.hover\:scale-105 {
+  &:hover {
+    @media (hover: hover) {
+      --tw-scale-x: 105%;
+      --tw-scale-y: 105%;
+      --tw-scale-z: 105%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+  }
+}
 .hover\:bg-\[\#0CBABA\] {
   &:hover {
     @media (hover: hover) {
@@ -472,13 +470,6 @@
   &:hover {
     @media (hover: hover) {
       text-decoration-line: underline;
-    }
-  }
-}
-.hover\:opacity-90 {
-  &:hover {
-    @media (hover: hover) {
-      opacity: 90%;
     }
   }
 }
@@ -538,6 +529,20 @@
 :root {
   --primary-color: #0cbaba;
   --secondary-color: #380036;
+}
+@layer utilities {
+  .bg-gradient-custom {
+    background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+  }
+  .bg-gradient-custom-br {
+    background: linear-gradient(to bottom right, var(--secondary-color), var(--primary-color));
+  }
+  .bg-gradient-purple {
+    background: linear-gradient(to right, #343464, #5a5a8f);
+  }
+  .bg-gradient-blue {
+    background: linear-gradient(to right, #3a86ff, #8338ec);
+  }
 }
 @property --tw-scale-x {
   syntax: "*";

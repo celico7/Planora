@@ -6,3 +6,33 @@
     --primary-color: #0cbaba;
     --secondary-color: #380036;
 }
+
+@layer utilities {
+    .bg-gradient-custom {
+        background: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+    }
+
+    .bg-gradient-custom-br {
+        background: linear-gradient(to bottom right, var(--secondary-color), var(--primary-color));
+    }
+
+    .bg-gradient-purple {
+        background: linear-gradient(135deg, #aab5e9 0%, #ac93c6 100%);
+    }
+
+    .bg-gradient-blue {
+        background: linear-gradient(135deg, #c1dbf3 0%, #abeff3 100%);
+    }
+
+    .bg-gradient-green {
+        background: linear-gradient(135deg, #bbf3d4 0%, #7bb394 100%);
+    }
+
+    .bg-gradient-orange {
+        background: linear-gradient(135deg, #f6d5c5 0%, #efb6b6 100%);
+    }
+
+    .bg-gradient-red {
+        background: linear-gradient(135deg, #fbcad8 0%, #ac6889 100%);
+    }
+}

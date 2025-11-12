@@ -1,4 +1,4 @@
-<div class="space-y-6" x-data="{ showFilters: false }">
+<div class="space-y-6">
 
     {{-- Flash Messages --}}
     @if (session()->has('success'))
@@ -10,96 +10,21 @@
     {{-- En-tête avec actions --}}
     <div class="flex items-center justify-between flex-wrap gap-4">
         <div>
-            <h2 class="text-3xl font-bold text-gray-800">📅 Roadmap Projet</h2>
+            <h2 class="text-3xl font-bold text-gray-800">Roadmap Projet</h2>
             <p class="text-gray-600 mt-1">{{ $project->nom }}</p>
         </div>
+
         <div class="flex gap-3 flex-wrap">
-            <button @click="showFilters = !showFilters"
-                    class="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300 transition flex items-center gap-2">
-                <i class="bi bi-funnel"></i>
-                Filtres
-                <i class="bi" :class="showFilters ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
-            </button>
             <a href="{{ route('projects.sprints.create', ['project' => $project->id]) }}"
-           class="rounded px-4 py-2 bg-primary text-white hover:bg-primary/90 font-semibold shadow transition">
-            <i class="bi bi-plus-circle mr-2"></i>Nouveau Sprint</a>
-            <button wire:click="exportData"
-                    class="px-4 py-2 rounded bg-secondary text-white hover:opacity-90 transition flex items-center gap-2">
-                <i class="bi bi-download"></i>
-                Exporter
-            </button>
+               class="rounded px-4 py-2 bg-primary text-white hover:bg-primary/90 font-semibold shadow transition">
+                <i class="bi bi-plus-circle mr-2"></i>Nouveau Sprint
+            </a>
         </div>
-    </div>
-
-    {{-- Panneau Filtres --}}
-    <div x-show="showFilters"
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0 -translate-y-4"
-         x-transition:enter-end="opacity-100 translate-y-0"
-         class="bg-gray-50 rounded-lg p-6 border border-gray-200">
-        <h3 class="font-semibold text-gray-700 mb-4">🔍 Filtres avancés</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Statut</label>
-                <select wire:model.live="filterStatus" class="w-full rounded border-gray-300">
-                    <option value="all">Tous</option>
-                    <option value="active">Actifs</option>
-                    <option value="completed">Terminés</option>
-                </select>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Sprint</label>
-                <select wire:model.live="filterSprint" class="w-full rounded border-gray-300">
-                    <option value="all">Tous les sprints</option>
-                    @foreach($sprints as $sprint)
-                        <option value="{{ $sprint->id }}">{{ $sprint->nom }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Recherche</label>
-                <input type="text"
-                       wire:model.live.debounce.500ms="searchTerm"
-                       placeholder="Rechercher un epic..."
-                       class="w-full rounded border-gray-300">
-            </div>
-        </div>
-        <div class="mt-4 flex gap-2">
-            <button wire:click="applyFilters"
-                    class="px-4 py-2 rounded bg-primary text-white hover:bg-primary/90 transition">
-                Appliquer
-            </button>
-            <button wire:click="resetFilters"
-                    class="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
-                Réinitialiser
-            </button>
-        </div>
-    </div>
-
-    {{-- Modes de vue Gantt --}}
-    <div class="flex gap-3 items-center bg-white p-4 rounded-lg shadow border">
-        <span class="text-sm font-semibold text-gray-700">Vue :</span>
-        <button wire:click="changeViewMode('Day')"
-                class="px-4 py-2 rounded transition {{ $viewMode === 'Day' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
-            Jour
-        </button>
-        <button wire:click="changeViewMode('Week')"
-                class="px-4 py-2 rounded transition {{ $viewMode === 'Week' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
-            Semaine
-        </button>
-        <button wire:click="changeViewMode('Month')"
-                class="px-4 py-2 rounded transition {{ $viewMode === 'Month' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
-            Mois
-        </button>
-        <button wire:click="viewToday"
-                class="px-4 py-2 rounded bg-secondary text-white hover:opacity-90 ml-auto flex items-center gap-2 transition">
-            <i class="bi bi-pin-map"></i>Aujourd'hui
-        </button>
     </div>
 
     {{-- Statistiques Dashboard --}}
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <div class="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-4 hover:shadow-lg transition">
+        <div class="bg-gradient-purple border border-purple-200 rounded-lg p-4 hover:shadow-lg transition">
             <div class="flex items-center justify-between mb-2">
                 <i class="bi bi-calendar3 text-3xl text-purple-600"></i>
                 <span class="text-xs font-semibold text-purple-600 bg-purple-200 px-2 py-1 rounded-full">
@@ -110,13 +35,13 @@
             <div class="text-3xl font-bold text-purple-700">{{ $stats['total_sprints'] }}</div>
         </div>
 
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4 hover:shadow-lg transition">
+        <div class="bg-gradient-blue border border-blue-200 rounded-lg p-4 hover:shadow-lg transition">
             <i class="bi bi-box-seam text-3xl text-blue-600 mb-2"></i>
             <div class="text-sm text-blue-600 font-semibold">Epics</div>
             <div class="text-3xl font-bold text-blue-700">{{ $stats['total_epics'] }}</div>
         </div>
 
-        <div class="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-4 hover:shadow-lg transition">
+        <div class="bg-gradient-green border border-green-200 rounded-lg p-4 hover:shadow-lg transition">
             <div class="flex items-center justify-between mb-2">
                 <i class="bi bi-check-circle-fill text-3xl text-green-600"></i>
                 <span class="text-xs font-semibold text-green-700">{{ $stats['completion_rate'] }}%</span>
@@ -125,13 +50,13 @@
             <div class="text-3xl font-bold text-green-700">{{ $stats['completed_tasks'] }}</div>
         </div>
 
-        <div class="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-lg p-4 hover:shadow-lg transition">
+        <div class="bg-gradient-orange border border-orange-200 rounded-lg p-4 hover:shadow-lg transition">
             <i class="bi bi-hourglass-split text-3xl text-orange-600 mb-2"></i>
             <div class="text-sm text-orange-600 font-semibold">En cours</div>
             <div class="text-3xl font-bold text-orange-700">{{ $stats['in_progress_tasks'] }}</div>
         </div>
 
-        <div class="bg-gradient-to-br from-red-50 to-red-100 border border-red-200 rounded-lg p-4 hover:shadow-lg transition">
+        <div class="bg-gradient-red border border-red-200 rounded-lg p-4 hover:shadow-lg transition">
             <div class="flex items-center justify-between mb-2">
                 <i class="bi bi-exclamation-triangle-fill text-3xl text-red-600"></i>
                 @if($stats['overdue_tasks'] > 0)
@@ -145,12 +70,42 @@
         </div>
     </div>
 
-
     {{-- Gantt Chart --}}
     <div class="bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
         <div class="relative" style="min-height: 500px;">
-            <div id="today-bar" class="absolute top-0 bottom-0 pointer-events-none z-30"
-                 style="width: 2px; background: #f43f5e; display: none;"></div>
+            {{-- Boutons de vue stylisés avec état actif --}}
+            <div class="flex gap-2 p-4 bg-gray-50 border-b items-center" x-data="{ activeView: '{{ $viewMode }}' }">
+
+                <button id="btn-day"
+                        @click="activeView = 'Day'"
+                        :class="activeView === 'Day' ? 'bg-secondary text-white shadow-lg scale-105' : 'bg-white text-gray-700 hover:bg-gray-100'"
+                        class="px-4 py-2 rounded-lg transition-all duration-200 font-medium border border-gray-200 flex items-center gap-2">
+                    <span>Jour</span>
+                </button>
+
+                <button id="btn-week"
+                        @click="activeView = 'Week'"
+                        :class="activeView === 'Week' ? 'bg-secondary text-white shadow-lg scale-105' : 'bg-white text-gray-700 hover:bg-gray-100'"
+                        class="px-4 py-2 rounded-lg transition-all duration-200 font-medium border border-gray-200 flex items-center gap-2">
+                    <span>Semaine</span>
+                </button>
+
+                <button id="btn-month"
+                        @click="activeView = 'Month'"
+                        :class="activeView === 'Month' ? 'bg-secondary text-white shadow-lg scale-105' : 'bg-white text-gray-700 hover:bg-gray-100'"
+                        class="px-4 py-2 rounded-lg transition-all duration-200 font-medium border border-gray-200 flex items-center gap-2">
+                    <span>Mois</span>
+                </button>
+
+                <div class="flex-1"></div>
+
+                <button id="btn-today"
+                        class="px-4 py-2 rounded-lg bg-gradient-purple text-white hover:shadow-xl transition-all duration-200 font-semibold flex items-center gap-2 border-2 border-transparent hover:border-purple-400">
+                    <i class="bi bi-pin-map-fill"></i>
+                    <span>Aujourd'hui</span>
+                </button>
+            </div>
+            {{-- Conteneur Gantt --}}
             <div id="gantt" class="relative min-w-full p-4" wire:ignore></div>
         </div>
     </div>
@@ -159,7 +114,6 @@
     <div class="space-y-4">
         <div class="flex items-center justify-between">
             <h3 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-                <i class="bi bi-list-ul"></i>
                 Vue détaillée
             </h3>
             <span class="text-sm text-gray-500">{{ $sprints->count() }} sprint(s) • {{ $epics->count() }} epic(s)</span>
@@ -224,7 +178,7 @@
                 {{-- Barre de progression --}}
                 <div class="w-full bg-gray-200 rounded-full h-4 mb-4 overflow-hidden shadow-inner">
                     <div class="h-full rounded-full flex items-center justify-center text-[10px] font-bold text-white transition-all duration-700 ease-out"
-                         style="width: {{ $progress }}%; background: linear-gradient(to right,#9333ea,#8b5cf6);">
+                         style="width: {{ $progress }}%; background: linear-gradient(to right,#343464,#5a5a8f);">
                         @if($progress > 15)
                             {{ $progress }}%
                         @endif
@@ -386,7 +340,7 @@ async function initializeGantt() {
         setTimeout(() => {
             if (ganttInstance && ganttInstance.bars) {
                 ganttInstance.bars.forEach(bar => {
-                    const color = bar.task.color || '#18bcc6';
+                    const color = bar.task.color || '#343464ff';
                     bar.$bar.style.fill = color;
                     bar.$bar.style.stroke = color;
 
@@ -395,7 +349,6 @@ async function initializeGantt() {
                         bar.$bar.setAttribute('ry', '50%');
                     }
                 });
-                positionTodayLine();
             }
         }, 300);
 
@@ -406,61 +359,89 @@ async function initializeGantt() {
     }
 }
 
-function positionTodayLine() {
-    const gantt = document.getElementById('gantt');
-    if (!gantt) return;
-
-    const today = new Date();
-    const dayEls = gantt.querySelectorAll('.grid-header .tick');
-
-    dayEls.forEach(el => {
-        if (el.textContent.trim() == today.getDate().toString()) {
-            const bar = document.getElementById('today-bar');
-            if (bar) {
-                bar.style.left = (el.offsetLeft + el.offsetWidth / 2) + 'px';
-                bar.style.display = 'block';
-            }
-        }
-    });
-}
-
 function centerToday() {
     const gantt = document.getElementById('gantt');
     if (!gantt) return;
+
     const today = new Date();
+    const todayDay = today.getDate().toString();
     const dayEls = gantt.querySelectorAll('.grid-header .tick');
+
     dayEls.forEach(el => {
-        if (el.textContent.trim() == today.getDate().toString()) {
+        const text = el.textContent.trim();
+        if (text === todayDay || text === todayDay.padStart(2, '0')) {
             gantt.parentElement.scrollLeft = el.offsetLeft - 200;
         }
     });
 }
 
+// Event Listeners pour les boutons
+document.addEventListener('DOMContentLoaded', () => {
+    const btnDay = document.getElementById('btn-day');
+    const btnWeek = document.getElementById('btn-week');
+    const btnMonth = document.getElementById('btn-month');
+    const btnToday = document.getElementById('btn-today');
+
+    if (btnDay) {
+        btnDay.addEventListener('click', () => {
+            if (ganttInstance) {
+                ganttInstance.change_view_mode('Day');
+                setTimeout(positionTodayLine, 300);
+                setTimeout(centerToday, 400);
+            }
+        });
+    }
+
+    if (btnWeek) {
+        btnWeek.addEventListener('click', () => {
+            if (ganttInstance) {
+                ganttInstance.change_view_mode('Week');
+                setTimeout(positionTodayLine, 300);
+            }
+        });
+    }
+
+    if (btnMonth) {
+        btnMonth.addEventListener('click', () => {
+            if (ganttInstance) {
+                ganttInstance.change_view_mode('Month');
+                setTimeout(positionTodayLine, 300);
+            }
+        });
+    }
+
+    if (btnToday) {
+        btnToday.addEventListener('click', () => {
+            if (ganttInstance) {
+                ganttInstance.change_view_mode('Day');
+                setTimeout(() => {
+                    positionTodayLine();
+                    centerToday();
+                }, 300);
+            }
+        });
+    }
+});
+
 document.addEventListener('livewire:initialized', () => {
     initializeGantt();
 
     Livewire.on('updateGanttView', (data) => {
-        console.log('📡 Événement reçu updateGanttView:', data);
         if (ganttInstance) {
             ganttInstance.change_view_mode(data[0].mode);
             setTimeout(() => {
-                positionTodayLine();
                 if (data[0].mode === 'Day') {
                     centerToday();
                 }
             }, 300);
-        } else {
-            console.warn('⚠️ Gantt instance non disponible');
         }
     });
 
     Livewire.on('centerToday', () => {
-        console.log('📡 Événement reçu centerToday');
         setTimeout(centerToday, 250);
     });
 
     Livewire.on('ganttRefresh', () => {
-        console.log('📡 Événement reçu ganttRefresh');
         setTimeout(initializeGantt, 200);
     });
 });
