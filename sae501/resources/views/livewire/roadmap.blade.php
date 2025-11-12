@@ -13,13 +13,14 @@
             <h2 class="text-3xl font-bold text-gray-800">Roadmap Projet</h2>
             <p class="text-gray-600 mt-1">{{ $project->nom }}</p>
         </div>
-
+    @can('update', $project)
         <div class="flex gap-3 flex-wrap">
             <a href="{{ route('projects.sprints.create', ['project' => $project->id]) }}"
                class="rounded px-4 py-2 bg-primary text-white hover:bg-primary/90 font-semibold shadow transition">
                 <i class="bi bi-plus-circle mr-2"></i>Nouveau Sprint
             </a>
         </div>
+    @endcan
     </div>
 
     {{-- Statistiques Dashboard --}}
@@ -161,10 +162,12 @@
                                    class="block px-4 py-2 hover:bg-gray-100">
                                     <i class="bi bi-eye mr-2"></i>Voir détails
                                 </a>
+                                @can('update', $project)
                                 <a href="{{ route('projects.sprints.edit', [$project->id, $sprint->id]) }}"
                                    class="block px-4 py-2 hover:bg-gray-100">
                                     <i class="bi bi-pencil mr-2"></i>Modifier
                                 </a>
+                                @endcan
                                 <button wire:click="deleteSprint({{ $sprint->id }})"
                                         wire:confirm="Supprimer ce sprint ?"
                                         class="block w-full text-left px-4 py-2 hover:bg-red-50 text-red-600">

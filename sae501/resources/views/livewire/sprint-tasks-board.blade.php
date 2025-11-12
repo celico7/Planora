@@ -42,6 +42,7 @@
                         @endif
                     </div>
                     <!-- Menu 3 points Épic -->
+                    @can('update', $epic)
                     <div class="relative group">
                         <button class="p-2 rounded hover:bg-gray-200"
                                 onclick="event.stopPropagation(); this.nextElementSibling.classList.toggle('hidden');">
@@ -69,6 +70,7 @@
                             </a>
                         </div>
                     </div>
+                    @endcan
                 </div>
                 @if($openEpicId === $epic->id)
                     <div class="transition-all duration-300 ease-in-out mt-4">
@@ -90,6 +92,7 @@
                         <p class="mb-4 font-semibold text-gray-400 flex gap-2 justify-center">{{ $epic->begining }} → {{ $epic->end }}</p>
                         <div class="flex flex-col gap-3 flex-1">
                             @forelse($epic->tasks as $task)
+                                @can('update', $epic)
                                 <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2 hover:shadow-lg transition-shadow cursor-pointer"
                                      wire:click="openTask({{ $task->id }})">
                                     <div class="font-semibold text-secondary mb-1">{{ $task->nom }}</div>
@@ -142,13 +145,63 @@
                                             </div>
                                             @endif
                                         </div>
-                                        <span class="text-xs text-gray-500">Échéance : {{ $task->echeance }}</span>
+                                        {{-- Ligne échéance + avatar responsable --}}
+                                        <div class="flex items-center justify-between mt-2">
+                                            <span class="text-xs text-gray-500">Échéance : {{ $task->echeance }}</span>
+                                            @php $assignee = $task->responsable; @endphp
+                                            <div class="flex items-center gap-2">
+                                                @if($assignee)
+                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background=0cbaba&color=fff"
+                                                         alt="{{ $assignee->name }}"
+                                                         class="w-6 h-6 rounded-full ring-2 ring-white" title="{{ $assignee->name }}">
+                                                @else
+                                                    <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-[10px] text-gray-600"
+                                                         title="Non assignée">?</div>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                @else
+                                <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2">
+                                    <div class="font-semibold text-secondary mb-1">{{ $task->nom }}</div>
+                                    <div class="text-xs text-gray-500">{{ $task->description }}</div>
+                                    <div class="flex flex-col gap-2 mt-2">
+                                        <span class="inline-block text-[10px] font-semibold tracking-wide px-2 py-1 rounded"
+                                              style="background: {{ $c }}; color: {{ $titleColor }}; border: 1px solid {{ $c }};">
+                                            <i class="bi bi-bookmark-fill mr-1"></i>{{ $epic->nom }}
+                                        </span>
+                                        <span class="px-2 py-1 rounded text-xs font-semibold inline-block
+                                            {{ $task->statut === 'terminé' ? 'bg-green-100 text-green-700' : ($task->statut === 'en cours' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-700') }}">
+                                            {{ ucfirst($task->statut) }}
+                                        </span>
+                                        <span class="px-2 py-1 rounded text-xs font-semibold inline-block
+                                            {{ $task->priorite === 'haute' ? 'bg-red-100 text-red-700' : ($task->priorite === 'moyenne' ? 'bg-orange-100 text-orange-700' : 'bg-gray-100 text-gray-700') }}">
+                                            {{ ucfirst($task->priorite) }}
+                                        </span>
+                                        {{-- Ligne échéance + avatar responsable --}}
+                                        <div class="flex items-center justify-between mt-2">
+                                            <span class="text-xs text-gray-500">Échéance : {{ $task->echeance }}</span>
+                                            @php $assignee = $task->responsable; @endphp
+                                            <div class="flex items-center gap-2">
+                                                @if($assignee)
+                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background=0cbaba&color=fff"
+                                                         alt="{{ $assignee->name }}"
+                                                         class="w-6 h-6 rounded-full ring-2 ring-white" title="{{ $assignee->name }}">
+                                                @else
+                                                    <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-[10px] text-gray-600"
+                                                         title="Non assignée">?</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endcan
                             @empty
                                 <div class="text-gray-400 italic text-xs">Aucune tâche</div>
                             @endforelse
                         </div>
+                        @can('update', $epic)
                         <div class="mt-4 p-2 text-sm text-secondary bg-gray-100 border border-dashed border-gray-300 rounded shadow transition-colors duration-200 group hover:bg-gray-200">
                             <a href="{{ route('projects.sprints.epics.tasks.create', [
                                 'project' => $epic->project_id,
@@ -158,6 +211,7 @@
                                 Ajouter une tâche à {{ $epic->nom }}
                             </a>
                         </div>
+                        @endcan
                     </div>
                 @endif
             </div>
@@ -206,6 +260,8 @@
                             $badgeColor = $epicId ? $epicColors[$epicId] : '#e5e7eb';
                             $badgeText = $epicId ? epicTextColor($badgeColor) : '#374151';
                         @endphp
+
+                        @can('update', $task->epic)
                         <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2 hover:shadow-lg transition-shadow cursor-pointer"
                              wire:click="openTask({{ $task->id }})">
                             <span class="inline-block px-2 py-1 rounded text-[10px] font-semibold tracking-wide"
@@ -219,7 +275,44 @@
                             <div class="flex items-center gap-2 text-xs text-gray-500">
                                 <i class="bi bi-calendar-event mr-1"></i> {{ $task->echeance ?? 'Non défini' }}
                             </div>
+                            <div class="flex items-center justify-end mt-2">
+                                @php $assignee = $task->responsable; @endphp
+                                @if($assignee)
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background=0cbaba&color=fff"
+                                         alt="{{ $assignee->name }}"
+                                         class="w-6 h-6 rounded-full ring-2 ring-white" title="{{ $assignee->name }}">
+                                @else
+                                    <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-[10px] text-gray-600"
+                                         title="Non assignée">?</div>
+                                @endif
+                            </div>
                         </div>
+                        @else
+                        <div class="bg-white border border-gray-200 shadow rounded-lg p-3 mb-2">
+                            <span class="inline-block px-2 py-1 rounded text-[10px] font-semibold tracking-wide"
+                                  style="background: {{ $badgeColor }}; color: {{ $badgeText }};
+                                         border: 1px solid {{ $badgeColor }};">
+                                <i class="bi bi-bookmark-fill mr-1"></i>
+                                {{ isset($task->epic) && $task->epic ? $task->epic->nom : 'Sans epic' }}
+                            </span>
+                            <h3 class="font-semibold text-secondary mb-2 mt-2">{{ $task->nom ?? 'Sans nom' }}</h3>
+                            <p class="text-xs text-gray-500 mb-3">{{ $task->description ?? '' }}</p>
+                            <div class="flex items-center gap-2 text-xs text-gray-500">
+                                <i class="bi bi-calendar-event mr-1"></i> {{ $task->echeance ?? 'Non défini' }}
+                            </div>
+                            <div class="flex items-center justify-end mt-2">
+                                @php $assignee = $task->responsable; @endphp
+                                @if($assignee)
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background=0cbaba&color=fff"
+                                         alt="{{ $assignee->name }}"
+                                         class="w-6 h-6 rounded-full ring-2 ring-white" title="{{ $assignee->name }}">
+                                @else
+                                    <div class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-[10px] text-gray-600"
+                                         title="Non assignée">?</div>
+                                @endif
+                            </div>
+                        </div>
+                        @endcan
                     @empty
                         <div class="text-gray-400 italic text-sm text-center py-4">Aucune tâche</div>
                     @endforelse

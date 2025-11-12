@@ -6,11 +6,13 @@
     <p class="mb-6 text-gray-600">Durée : {{ $sprint->begining }} → {{ $sprint->end }}</p>
 
     <!-- Actions sprint -->
+    @can('update', $project)
     <div class="flex gap-3 mb-6">
         <a href="{{ route('projects.sprints.epics.create', ['project' => $project->id, 'sprint' => $sprint->id]) }}"
             class="px-4 py-2 rounded bg-white shadow hover:bg-primary/10 text-primary border border-primary/30 transition">
             <i class="bi bi-plus-circle-fill mr-1"></i>Créer un epic
         </a>
+    @endcan
 
         @if($sprint->epics()->count() > 0)
 

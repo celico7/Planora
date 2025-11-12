@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Project;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -46,13 +47,25 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-       public function projects()
+    public function projects()
     {
         return $this->belongsToMany(Project::class, 'user_project_role', 'utilisateur_id', 'projet_id')
-                    ->withPivot('role')
-                    ->withTimestamps();
+            ->withPivot(['role'])
+            ->withTimestamps();
     }
 
+    public function hasProjectRole(Project $project, array|string $roles): bool
+    {
+        $roles = (array) $roles;
 
+        // Si l'utilisateur est chef_projet, il est admin de facto
+        if ($project->chef_projet === $this->id) {
+            return in_array('admin', $roles, true) || in_array('*', $roles, true);
+        }
 
+        // Correction : utiliser projects.id au lieu de project_id
+        $pivot = $this->projects()->where('projects.id', $project->id)->first()?->pivot;
+
+        return $pivot && in_array($pivot->role, $roles, true);
+    }
 }

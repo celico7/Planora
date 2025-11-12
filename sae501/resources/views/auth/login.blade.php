@@ -46,12 +46,12 @@
 @endsection
 
 @section('content')
-<div class="relative min-h-[85vh] flex flex-col">
+<div class="relative min-h-[85vh] flex flex-row">
     <span class="blob"></span>
     <span class="blob2"></span>
     <!-- Main -->
     <main class="flex-1 flex items-center justify-center pb-8 z-10 w-full">
-        <div class="w-full max-w-8xl flex flex-col md:flex-row bg-transparent shadow-none">
+        <div class="w-full max-w-8xl flex flex-row md:flex-row bg-transparent shadow-none">
             <!-- Bloc visuel Planora à gauche -->
             <div class="flex-1 flex flex-col justify-center items-center text-center py-10 md:py-0 md:px-8 select-none">
                 <h1 class="text-5xl md:text-6xl font-extrabold" style="color:#0CBABA;letter-spacing:2px;text-shadow:0 4px 32px #38003699;">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Task;
 use App\Models\Sprint;
 use App\Models\Project;
@@ -10,15 +11,19 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    use AuthorizesRequests;
 
     public function create(Project $project, Sprint $sprint, Epic $epic)
     {
+        $this->authorize('update', $project);
         return view('tasks.create', compact('project', 'sprint', 'epic'));
     }
 
 
-    public function store(Project $project, Sprint $sprint, Epic $epic, Request $request)
+    public function store(Request $request, Project $project, Sprint $sprint, Epic $epic)
     {
+        $this->authorize('update', $project);
+
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -46,11 +51,14 @@ class TaskController extends Controller
 
     public function edit(Project $project, Sprint $sprint, Epic $epic, Task $task)
     {
+        $this->authorize('update', $project);
         return view('tasks.edit', compact('project', 'sprint', 'epic', 'task'));
     }
 
     public function update(Request $request, Project $project, Sprint $sprint, Epic $epic, Task $task)
     {
+        $this->authorize('update', $project);
+
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -76,6 +84,9 @@ class TaskController extends Controller
     // Liste les tâches
     public function index($projectId, $sprintId)
     {
+        $project = Project::findOrFail($projectId);
+        $this->authorize('view', $project);
+
         $sprint = Sprint::with('tasks')->findOrFail($sprintId);
         $tasks = $sprint->tasks;
 
@@ -84,6 +95,7 @@ class TaskController extends Controller
 
     public function destroy(Project $project, Sprint $sprint, Epic $epic, Task $task)
     {
+        $this->authorize('update', $project);
         $task->delete();
 
         return redirect()->route('projects.sprints.show', [$project, $sprint])

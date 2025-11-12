@@ -43,33 +43,6 @@
             </div>
         </div>
 
-        <!-- Statistiques du profil -->
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="bg-white shadow-md rounded-lg p-6 border-l-4 border-primary">
-                <h3 class="text-lg font-semibold text-gray-700 mb-2">Projets</h3>
-                <p class="text-4xl font-bold text-secondary">
-                    {{ \App\Models\Project::where('chef_projet', Auth::id())->count() }}
-                </p>
-                <p class="text-sm text-gray-400">Projets créés par vous</p>
-            </div>
-
-            <div class="bg-white shadow-md rounded-lg p-6 border-l-4 border-primary">
-                <h3 class="text-lg font-semibold text-gray-700 mb-2">Sprints actifs</h3>
-                <p class="text-4xl font-bold text-secondary">
-                    {{ \App\Models\Sprint::count() }}
-                </p>
-                <p class="text-sm text-gray-400">Tous les sprints en cours</p>
-            </div>
-
-            <div class="bg-white shadow-md rounded-lg p-6 border-l-4 border-primary">
-                <h3 class="text-lg font-semibold text-gray-700 mb-2">Tâches assignées</h3>
-                <p class="text-4xl font-bold text-secondary">
-                    {{ \App\Models\Task::where('responsable_id', Auth::id())->count() }}
-                </p>
-                <p class="text-sm text-gray-400">Tâches attribuées à vous</p>
-            </div>
-        </div>
-
         <!-- Section Bienvenue -->
         <div class="mt-12 bg-gradient-blue rounded-lg p-8 text-white shadow-lg">
             <h2 class="text-2xl font-bold mb-3">Bonjour, {{ Auth::user()->name }}</h2>

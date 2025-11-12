@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ProjectController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Affiche la liste des projets de l’utilisateur connecté
      */
     public function index()
     {
-        $projects = Project::where('chef_projet', Auth::id())->get();
-        return view('projects.show', compact('projects'));
+        $projects = Project::forUser(Auth::user())->latest()->get();
+        return view('projects.index', compact('projects'));
     }
 
     /**
@@ -29,51 +32,39 @@ class ProjectController extends Controller
      * Enregistre un nouveau projet dans la base
      */
     public function store(Request $request)
-{
-    // Validation des données
-    $request->validate([
-        'nom' => 'required|string|max:255',
-        'description' => 'required|string',
-    ]);
+    {
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-    // Création du projet
-    $project = Project::create([
-        'nom' => $request->nom,
-        'description' => $request->description,
-        'chef_projet' => auth()->id(),
-    ]);
+        $project = Project::create([
+            'nom' => $validated['nom'],
+            'description' => $validated['description'] ?? null,
+            'chef_projet' => Auth::id(),
+        ]);
 
-    // Ajouter l'utilisateur connecté comme admin
-    $project->users()->attach(auth()->id(), ['role' => 'admin']);
+        // Ajouter le créateur comme admin dans le pivot
+        $project->users()->attach(Auth::id(), ['role' => Project::ROLE_ADMIN]);
 
-    // Redirection vers la liste des projets + creation projets
-    return redirect()->route('projects.show')->with('success', 'Projet créé avec succès !');
-}
-
-
+        return redirect()->route('projects.show', $project)->with('success', 'Projet créé avec succès.');
+    }
 
     /**
      * Affiche un projet précis
      */
     public function show(Project $project)
     {
-        if ($project->chef_projet !== Auth::id()) {
-            abort(403, 'Accès interdit');
-        }
-
+        $this->authorize('view', $project);
         return view('projects.show', compact('project'));
     }
-
 
     /**
      * Formulaire d’édition d’un projet
      */
     public function edit(Project $project)
     {
-        if ($project->chef_projet !== Auth::id()) {
-            abort(403, 'Accès interdit');
-        }
-
+        $this->authorize('updateSettings', $project);
         return view('projects.edit', compact('project'));
     }
 
@@ -82,19 +73,15 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        if ($project->chef_projet !== Auth::id()) {
-            abort(403, 'Accès interdit');
-        }
+        $this->authorize('updateSettings', $project);
 
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
         ]);
 
         $project->update($validated);
-
-        return redirect()->route('projects.show', $project)
-                         ->with('success', 'Projet mis à jour avec succès !');
+        return redirect()->route('projects.show', $project)->with('success', 'Projet modifié.');
     }
 
     /**
@@ -102,13 +89,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        // Supprime les liens avec les utilisateurs
-        $project->users()->detach();
-
-        // Supprime le projet
+        $this->authorize('delete', $project);
         $project->delete();
-
-        return redirect()->route('projects.index')->with('success', 'Projet supprimé avec succès !');
+        return redirect()->route('home')->with('success', 'Projet supprimé.');
     }
 
     public function roadmap(Project $project)

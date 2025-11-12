@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\SprintController;
 use App\Http\Controllers\EpicController;
+use App\Http\Controllers\ProjectMemberController;
 
 //email de verif
 use Illuminate\Support\Facades\Mail;
@@ -69,7 +70,16 @@ Route::get('/simulate-mail', function () {
     return $mail->render();
 })->middleware('auth');
 
-//routes protégées
+Route::middleware(['auth'])->group(function () {
+    Route::post('/projects/{project}/members', [ProjectMemberController::class, 'store'])
+        ->name('projects.members.store');
+    Route::patch('/projects/{project}/members/{user}', [ProjectMemberController::class, 'update'])
+        ->name('projects.members.update');
+    Route::delete('/projects/{project}/members/{user}', [ProjectMemberController::class, 'destroy'])
+        ->name('projects.members.destroy');
+});
+
+//routes protégées pour accéder aux contenus des projets
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('projects', ProjectController::class);
     Route::get('projects/{project}/roadmap', [ProjectController::class, 'roadmap'])->name('projects.roadmap');

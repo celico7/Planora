@@ -14,7 +14,11 @@ class SprintTasksBoard extends Component
     public $showStatutDropdown = [];
     public $showPrioriteDropdown = [];
 
-    protected $listeners = ['taskUpdated' => '$refresh'];
+    // Rafraîchir le board quand une tâche est modifiée/supprimée depuis le modal
+    protected $listeners = [
+        'taskUpdated' => '$refresh',
+        'taskDeleted' => '$refresh',
+    ];
 
     public function mount($sprintId)
     {
@@ -85,7 +89,11 @@ class SprintTasksBoard extends Component
 
     public function openTask($taskId)
     {
-        $this->dispatch('openTaskModal', taskId: $taskId);
+        // Livewire v3
+        $this->dispatch('openTask', taskId: $taskId)->to('task-modal');
+
+        // Si vous êtes en Livewire v2, utilisez plutôt:
+        // $this->emitTo('task-modal', 'openTask', $taskId);
     }
 
     public function render()

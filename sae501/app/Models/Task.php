@@ -33,6 +33,6 @@ class Task extends Model
     public function responsable()
     {
         return $this->belongsTo(\App\Models\User::class, 'responsable_id');
-    }   
+    }
 
 }
