@@ -83,8 +83,18 @@
                     <!-- Password -->
                     <div>
                         <label for="password" class="block text-sm font-medium" style="color:#380036">Mot de passe</label>
-                        <input id="password" type="password" name="password" required
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#0CBABA] focus:ring-[#0CBABA] p-2 bg-white/95" />
+                        <div class="relative" x-data="{ showPassword: false }">
+                            <input :type="showPassword ? 'text' : 'password'"
+                                   id="password"
+                                   name="password"
+                                   required
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#0CBABA] focus:ring-[#0CBABA] p-2 pr-10 bg-white/95" />
+                            <button type="button"
+                                    @click="showPassword = !showPassword"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                <i class="bi" :class="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
                         @error('password')
                             <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                         @enderror

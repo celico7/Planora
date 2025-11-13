@@ -91,5 +91,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
+Route::middleware('auth')->group(function () {
+    // ...existing code...
+    Route::get('/tasks/search', function () {
+        return view('tasks.search');
+    })->name('tasks.search');
+});
+
 
 require __DIR__.'/auth.php';

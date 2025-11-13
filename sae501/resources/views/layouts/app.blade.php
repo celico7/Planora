@@ -13,9 +13,6 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
 
-    <!-- Alpine.js AVANT Livewire -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     @yield('styles')
 </head>
 
@@ -52,6 +49,10 @@
         <a href="{{ route('projects.create') }}" title="Créer un nouveau projet"
            class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
             <i class="bi bi-plus-circle-fill text-2xl"></i>
+        </a>
+        <a href="{{ route('tasks.search') }}" title="Rechercher des tâches"
+       class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
+        <i class="bi bi-search text-2xl"></i>
         </a>
         <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
             <i class="bi bi-kanban text-2xl"></i>
