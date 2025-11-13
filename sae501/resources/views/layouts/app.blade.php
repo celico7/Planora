@@ -9,12 +9,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/frappe-gantt@0.6.1/dist/frappe-gantt.min.css">
-
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
+
+    <!-- Alpine.js AVANT Livewire -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     @yield('styles')
 </head>
 
@@ -129,7 +130,6 @@
 <!-- Charger Frappe Gantt AVANT Livewire -->
 <script>
     window.ganttLoadedPromise = new Promise((resolve) => {
-        // Liste de CDN fallback
         const cdnUrls = [
             'https://cdn.jsdelivr.net/npm/frappe-gantt@0.6.1/dist/frappe-gantt.min.js',
             'https://unpkg.com/frappe-gantt@0.6.1/dist/frappe-gantt.min.js',
@@ -179,7 +179,6 @@
     });
 </script>
 @livewireScripts
-<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 @stack('scripts')
 
 </body>

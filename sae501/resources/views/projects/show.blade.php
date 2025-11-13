@@ -133,9 +133,9 @@
         @foreach($project->users as $member)
             <li class="py-4 flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode($member->name) }}&background=0cbaba&color=fff"
-                         alt="Avatar"
-                         class="w-10 h-10 rounded-full">
+                    <img src="https://ui-avatars.com/api/?name={{ urlencode($member->name) }}&background={{ $member->avatar_color ?? '0cbaba' }}&color=fff"
+                         alt="Avatar de {{ $member->name }}"
+                         class="w-10 h-10 rounded-full shadow-sm">
                     <div>
                         <p class="font-medium text-gray-800">{{ $member->name }}</p>
                         <p class="text-xs text-gray-500">{{ $member->email }}</p>

@@ -18,9 +18,7 @@
         <div class="bg-white shadow-md rounded-lg p-8 mb-10 border-t-4 border-primary">
             <div class="flex flex-row md:flex-row md:items-center md:justify-between gap-6">
                 <div class="flex items-center gap-4">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0cbaba&color=fff"
-                         alt="Avatar"
-                         class="w-20 h-20 rounded-full shadow">
+                    @livewire('avatar-color-picker')
                     <div>
                         <h2 class="text-2xl font-bold text-gray-800">{{ Auth::user()->name }}</h2>
                         <p class="text-gray-500">{{ Auth::user()->email }}</p>
@@ -30,7 +28,7 @@
                 <div class="flex flex-col sm:flex-row gap-3">
                     <a href="{{ route('home') }}"
                        class="px-4 py-2 rounded-md bg-secondary text-white hover:bg-[#5a0063] transition">
-                        Retour à l’accueil
+                        Retour à l'accueil
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

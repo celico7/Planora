@@ -10,6 +10,9 @@
             <div class="max-w-7xl mx-auto">
                 <div class="flex items-center justify-between flex-wrap gap-4">
                     <div>
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background={{ Auth::user()->avatar_color ?? '0cbaba' }}&color=fff"
+                             alt="Avatar"
+                             class="w-10 h-10 rounded-full shadow">
                         <h1 class="text-4xl font-bold mb-2">
                             Bonjour, {{ Auth::user()->name }}
                         </h1>
@@ -30,47 +33,11 @@
                     <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-gray-600/70 text-sm font-medium">Total Projets</p>
+                                <p class="text-gray-600/70 text-sm font-medium">Nombre de Projets</p>
                                 <p class="text-3xl font-bold text-gray-600 mt-1">{{ auth()->user()->projects->count() }}</p>
                             </div>
                             <div class="bg-white/20 p-3 rounded-lg">
                                 <i class="bi bi-folder-fill text-2xl text-gray-600"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-gray-600/70 text-sm font-medium">Projets Actifs</p>
-                                <p class="text-3xl font-bold text-gray-600 mt-1">{{ auth()->user()->projects->where('created_at', '>=', now()->subMonth())->count() }}</p>
-                            </div>
-                            <div class="bg-white/20 p-3 rounded-lg">
-                                <i class="bi bi-lightning-fill text-2xl text-gray-600"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-gray-600/70 text-sm font-medium">Membres</p>
-                                <p class="text-3xl font-bold text-gray-600 mt-1">{{ auth()->user()->projects->sum(fn($p) => $p->users->count()) }}</p>
-                            </div>
-                            <div class="bg-white/20 p-3 rounded-lg">
-                                <i class="bi bi-people-fill text-2xl text-gray-600"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/20">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <p class="text-gray-600/70 text-sm font-medium">Ce mois-ci</p>
-                                <p class="text-3xl font-bold text-gray-600 mt-1">{{ auth()->user()->projects->where('created_at', '>=', now()->startOfMonth())->count() }}</p>
-                            </div>
-                            <div class="bg-white/20 p-3 rounded-lg">
-                                <i class="bi bi-calendar-check-fill text-2xl text-gray-600"></i>
                             </div>
                         </div>
                     </div>
@@ -93,7 +60,7 @@
                     </span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                <div class="grid grid-cols md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                     @forelse(auth()->user()->projects->sortByDesc('created_at')->take(5) as $project)
                         <div class="group relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-5 hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary">
                             <div class="absolute top-3 right-3">
@@ -157,7 +124,7 @@
                     </span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                <div class="grid grid-cols md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                     @forelse(auth()->user()->projects as $project)
                         <div class="group relative bg-gradient-to-br from-white to-gray-50 rounded-xl p-5 hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-secondary">
                             <div class="mb-4">

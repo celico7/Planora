@@ -151,7 +151,7 @@
                                             @php $assignee = $task->responsable; @endphp
                                             <div class="flex items-center gap-2">
                                                 @if($assignee)
-                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background=0cbaba&color=fff"
+                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
                                                          alt="{{ $assignee->name }}"
                                                          class="w-6 h-6 rounded-full ring-2 ring-white" title="{{ $assignee->name }}">
                                                 @else
@@ -185,7 +185,7 @@
                                             @php $assignee = $task->responsable; @endphp
                                             <div class="flex items-center gap-2">
                                                 @if($assignee)
-                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background=0cbaba&color=fff"
+                                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
                                                          alt="{{ $assignee->name }}"
                                                          class="w-6 h-6 rounded-full ring-2 ring-white" title="{{ $assignee->name }}">
                                                 @else
@@ -278,7 +278,7 @@
                             <div class="flex items-center justify-end mt-2">
                                 @php $assignee = $task->responsable; @endphp
                                 @if($assignee)
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background=0cbaba&color=fff"
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
                                          alt="{{ $assignee->name }}"
                                          class="w-6 h-6 rounded-full ring-2 ring-white" title="{{ $assignee->name }}">
                                 @else
@@ -303,7 +303,7 @@
                             <div class="flex items-center justify-end mt-2">
                                 @php $assignee = $task->responsable; @endphp
                                 @if($assignee)
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background=0cbaba&color=fff"
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
                                          alt="{{ $assignee->name }}"
                                          class="w-6 h-6 rounded-full ring-2 ring-white" title="{{ $assignee->name }}">
                                 @else
