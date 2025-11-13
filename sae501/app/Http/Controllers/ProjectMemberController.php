@@ -20,7 +20,11 @@ class ProjectMemberController extends Controller
             'role'  => ['required','in:admin,membre,invite'],
         ]);
 
-        $user = User::where('email', $data['email'])->firstOrFail();
+        // Trouver l'utilisateur par email dans la table users
+        $user = User::where('email', $data['email'])->first();
+        if (!$user) {
+            return back()->with('error', 'Aucun utilisateur avec cette adresse mail n\'existe.');
+        }
 
         // Vérifier si l'utilisateur est déjà membre
         if ($project->users()->where('utilisateur_id', $user->id)->exists()) {

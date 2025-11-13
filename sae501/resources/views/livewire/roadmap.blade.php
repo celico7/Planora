@@ -131,7 +131,7 @@
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex-1">
                         <div class="flex items-center gap-3 mb-2">
-                            <h4 class="text-lg font-bold text-purple-700">🏃 {{ $sprint->nom }}</h4>
+                            <h4 class="text-lg font-bold text-purple-700">{{ $sprint->nom }}</h4>
                             @php
                                 $isActive = Carbon\Carbon::parse($sprint->end)->isFuture();
                             @endphp
@@ -200,7 +200,7 @@
                         @endphp
                         <div class="flex items-center gap-3 bg-gray-50 rounded p-3 hover:bg-gray-100 transition group">
                             <div class="flex-1">
-                                <div class="font-semibold text-primary">📦 {{ $epic->nom }}</div>
+                                <div class="font-semibold text-primary">{{ $epic->nom }}</div>
                                 <div class="text-xs text-gray-500 flex items-center gap-3 mt-1">
                                     <span>
                                         <i class="bi bi-calendar3"></i>
@@ -278,7 +278,7 @@ async function initializeGantt() {
 
     const tasks = @json($ganttTasks);
     if (tasks.length === 0) {
-        ganttEl.innerHTML = '<div class="text-center text-gray-500 py-12">📭 Aucune donnée<br><span class="text-sm">Créez des sprints et epics</span></div>';
+        ganttEl.innerHTML = '<div class="text-center text-gray-500 py-12"> Aucune donnée<br><span class="text-sm">Créez des sprints et epics</span></div>';
         return;
     }
 
@@ -302,7 +302,7 @@ async function initializeGantt() {
             },
             custom_popup_html: function(task) {
                 const color = task.color || '#2ab7ca';
-                const icon = task.type === 'sprint' ? '🏃' : task.type === 'milestone' ? '🚀' : '📦';
+                const icon = task.type === 'sprint' ? '' : task.type === 'milestone' ? '' : '';
                 const startDate = formatDate(task.start);
                 const endDate = formatDate(task.end);
 

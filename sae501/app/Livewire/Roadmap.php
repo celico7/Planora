@@ -146,7 +146,7 @@ class Roadmap extends Component
     {
         $tasks = [];
         $colorIndex = 0;
-        $colors = ['#343464ff'];
+        $colors = ['#4040b0ff', '#7517bdff', '#b04040ff', '#bd7517ff', '#40b040ff', '#17bd75ff'];
 
         foreach ($this->sprints as $sprint) {
             $progress = $sprint->computed_progress ?? 0;
