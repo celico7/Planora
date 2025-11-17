@@ -89,7 +89,7 @@
                             </div>
 
                             <a href="{{ route('projects.show', $project) }}" class="block">
-                                <button class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
+                                <button class="w-full px-4 py-2 bg-gray-800 text-white rounded-lg font-semibold hover:bg-gradient-custom hover:shadow-lg hover:scale-105 transition-all duration-200 flex items-center justify-center gap-2">
                                     <span>Ouvrir</span>
                                     <i class="bi bi-arrow-right"></i>
                                 </button>
