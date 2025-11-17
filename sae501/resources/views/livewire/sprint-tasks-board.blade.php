@@ -1,7 +1,7 @@
-<div class="flex gap-6 overflow-x-auto py-4 w-full">
+<div class="flex gap-6 overflow-x-auto py-4 w-full p-8 rounded-lg bg-gray-200">
 
     @php
-        // Palette de couleurs (modifie selon préférence)
+        // Palette de couleurs
         $palette = ['#0CBABA','#380036','#F59E0B','#EF4444','#10B981','#6366F1','#EC4899','#8B5CF6','#14B8A6','#DB2777'];
         $epicColors = [];
         foreach($epics as $i => $epic) {
@@ -19,7 +19,7 @@
         }
     @endphp
 
-    {{-- Colonne unique pour toutes les Epics, empilées --}}
+    {{-- Colonne unique pour toutes les Epics --}}
     <div class="flex flex-col gap-6 min-w-[18rem] max-w-[18rem] flex-shrink-0">
         @foreach($epics as $epic)
             @php
@@ -41,7 +41,7 @@
                             <i class="bi bi-chevron-down text-2xl"></i>
                         @endif
                     </div>
-                    <!-- Menu 3 points Épic -->
+                    <!-- Menu Épic -->
                     @can('update', $epic)
                     <div class="relative group">
                         <button class="p-2 rounded hover:bg-gray-200"
@@ -107,13 +107,14 @@
                                         <div wire:ignore.self class="relative">
                                             <button class="px-2 py-1 rounded text-xs font-semibold text-white w-full
                                                     {{ $task->statut === 'terminé' ? 'bg-green-500' : ($task->statut === 'en cours' ? 'bg-yellow-500' : 'bg-gray-500') }}"
-                                                    wire:click="$set('showStatutDropdown.{{ $task->id }}', true)">
+                                                    wire:click.stop="$set('showStatutDropdown.{{ $task->id }}', true)">
                                                 <i class="bi bi-exclamation-circle-fill mr-1"></i>
                                                 {{ ucfirst($task->statut) }}
                                                 <i class="bi bi-chevron-down ml-1"></i>
                                             </button>
                                             @if(isset($showStatutDropdown[$task->id]) && $showStatutDropdown[$task->id])
-                                            <div class="absolute mt-1 bg-white border border-gray-200 rounded shadow-md w-28 z-10">
+                                            <div class="absolute mt-1 bg-white border border-gray-200 rounded shadow-md w-28 z-10"
+                                                 wire:click.stop>
                                                 @foreach(['à faire', 'en cours', 'terminé'] as $statut)
                                                     <button type="button"
                                                         wire:click="updateTask({{ $task->id }}, 'statut', '{{ $statut }}')"
@@ -128,13 +129,14 @@
                                         <div wire:ignore.self class="relative">
                                             <button class="px-2 py-1 rounded text-xs font-semibold w-full
                                                     {{ $task->priorite === 'haute' ? 'bg-red-500 text-white' : ($task->priorite === 'moyenne' ? 'bg-orange-400 text-white' : 'bg-gray-200 text-gray-700') }}"
-                                                    wire:click="$set('showPrioriteDropdown.{{ $task->id }}', true)">
+                                                    wire:click.stop="$set('showPrioriteDropdown.{{ $task->id }}', true)">
                                                 <i class="bi bi-arrow-up-circle-fill mr-1"></i>
                                                 {{ ucfirst($task->priorite) }}
                                                 <i class="bi bi-chevron-down ml-1"></i>
                                             </button>
                                             @if(isset($showPrioriteDropdown[$task->id]) && $showPrioriteDropdown[$task->id])
-                                            <div class="absolute mt-1 bg-white border border-gray-200 rounded shadow-md w-28 z-10">
+                                            <div class="absolute mt-1 bg-white border border-gray-200 rounded shadow-md w-28 z-10"
+                                                 wire:click.stop>
                                                 @foreach(['basse', 'moyenne', 'haute'] as $priorite)
                                                     <button type="button"
                                                         wire:click="updateTask({{ $task->id }}, 'priorite', '{{ $priorite }}')"
@@ -147,8 +149,8 @@
                                         </div>
                                         {{-- Ligne échéance + avatar responsable --}}
                                         <div class="flex items-center justify-between mt-2">
-                                            <span class="text-xs text-gray-500">Échéance : {{ $task->echeance }}</span>
-                                            @php $assignee = $task->responsable; @endphp
+                                            <span class="text-xs text-gray-500">Échéance : {{ $task->echeance ? $task->echeance->format('d/m/Y') : 'Non définie' }}</span>
+                                            @php $assignee = $task->assignee; @endphp
                                             <div class="flex items-center gap-2">
                                                 @if($assignee)
                                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
@@ -181,8 +183,8 @@
                                         </span>
                                         {{-- Ligne échéance + avatar responsable --}}
                                         <div class="flex items-center justify-between mt-2">
-                                            <span class="text-xs text-gray-500">Échéance : {{ $task->echeance }}</span>
-                                            @php $assignee = $task->responsable; @endphp
+                                            <span class="text-xs text-gray-500">Échéance : {{ $task->echeance ? $task->echeance->format('d/m/Y') : 'Non définie' }}</span>
+                                            @php $assignee = $task->assignee; @endphp
                                             <div class="flex items-center gap-2">
                                                 @if($assignee)
                                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
@@ -273,10 +275,10 @@
                             <h3 class="font-semibold text-secondary mb-2 mt-2">{{ $task->nom ?? 'Sans nom' }}</h3>
                             <p class="text-xs text-gray-500 mb-3">{{ $task->description ?? '' }}</p>
                             <div class="flex items-center gap-2 text-xs text-gray-500">
-                                <i class="bi bi-calendar-event mr-1"></i> {{ $task->echeance ?? 'Non défini' }}
+                                <i class="bi bi-calendar-event mr-1"></i> {{ $task->echeance ? $task->echeance->format('d/m/Y') : 'Non définie' }}
                             </div>
                             <div class="flex items-center justify-end mt-2">
-                                @php $assignee = $task->responsable; @endphp
+                                @php $assignee = $task->assignee; @endphp
                                 @if($assignee)
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
                                          alt="{{ $assignee->name }}"
@@ -298,10 +300,10 @@
                             <h3 class="font-semibold text-secondary mb-2 mt-2">{{ $task->nom ?? 'Sans nom' }}</h3>
                             <p class="text-xs text-gray-500 mb-3">{{ $task->description ?? '' }}</p>
                             <div class="flex items-center gap-2 text-xs text-gray-500">
-                                <i class="bi bi-calendar-event mr-1"></i> {{ $task->echeance ?? 'Non défini' }}
+                                <i class="bi bi-calendar-event mr-1"></i> {{ $task->echeance ? $task->echeance->format('d/m/Y') : 'Non définie' }}
                             </div>
                             <div class="flex items-center justify-end mt-2">
-                                @php $assignee = $task->responsable; @endphp
+                                @php $assignee = $task->assignee; @endphp
                                 @if($assignee)
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
                                          alt="{{ $assignee->name }}"

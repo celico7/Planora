@@ -2,104 +2,68 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Task;
+use Livewire\Component;
 
 class TaskModal extends Component
 {
     public $showModal = false;
-    public $task;
-    public $editData = [];
+    public $taskId;
+    public $nom;
+    public $description;
+    public $statut;
+    public $priorite;
+    public $echeance;
+    public $responsable_id;
+    public $projectUsers = [];
 
-    public $members = [];
+    protected $listeners = ['openTask'];
 
-    protected $rules = [
-        'editData.nom' => 'required|string|max:255',
-        'editData.description' => 'nullable|string',
-        'editData.statut' => 'required',
-        'editData.priorite' => 'required',
-        'editData.echeance' => 'required|date',
-    ];
-
-    protected $listeners = [
-        'openTask' => 'openTask',
-    ];
-
-    public function hydrate()
+    public function openTask($taskId)
     {
-        if ($this->task) {
-            $this->loadMembersFromTask();
-        }
-    }
+        $task = Task::with('sprint.project.users', 'assignee')->findOrFail($taskId);
 
-    private function loadMembersFromTask(): void
-    {
-        $this->members = [];
-        if (!$this->task) return;
+        $this->taskId = $task->id;
+        $this->nom = $task->nom;
+        $this->description = $task->description;
+        $this->statut = $task->statut;
+        $this->priorite = $task->priorite;
+        $this->echeance = $task->echeance ? $task->echeance->format('Y-m-d') : null;
+        $this->responsable_id = $task->responsable_id;
+        $this->projectUsers = $task->sprint->project->users;
 
-        $project = optional(optional($this->task->epic)->sprint)->project;
-        if ($project) {
-            $members = $project->users()->get();
-
-            if ($project->chef && !$members->contains('id', $project->chef->id)) {
-                $members->push($project->chef);
-            }
-
-            $this->members = $members->unique('id')->sortBy('name')->values()->all();
-        }
-    }
-
-    public function openTask(int $taskId)
-    {
-        $this->task = Task::with('epic.sprint.project.users')->findOrFail($taskId);
-
-        $this->editData = [
-            'nom'            => $this->task->nom,
-            'description'    => $this->task->description,
-            'statut'         => $this->task->statut,
-            'priorite'       => $this->task->priorite,
-            'echeance'       => optional($this->task->echeance)->format('Y-m-d') ?? $this->task->echeance,
-            'responsable_id' => $this->task->responsable_id,
-        ];
-
-        $this->loadMembersFromTask();
         $this->showModal = true;
     }
 
     public function closeModal()
     {
-        $this->showModal = false;
+        $this->reset(['showModal', 'taskId', 'nom', 'description', 'statut', 'priorite', 'echeance', 'responsable_id', 'projectUsers']);
     }
 
-    public function updateTask()
+    public function save()
     {
         $this->validate([
-            'editData.nom'            => 'required|string|max:255',
-            'editData.description'    => 'nullable|string',
-            'editData.statut'         => 'required|in:à faire,en cours,terminé',
-            'editData.priorite'       => 'required|in:basse,moyenne,haute',
-            'editData.echeance'       => 'nullable|date',
-            'editData.responsable_id' => 'nullable|exists:users,id',
+            'nom' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'statut' => 'required|in:à faire,en cours,terminé',
+            'priorite' => 'required|in:basse,moyenne,haute',
+            'echeance' => 'nullable|date',
+            'responsable_id' => 'nullable|exists:users,id',
         ]);
 
-        $this->task->update([
-            'nom'            => $this->editData['nom'],
-            'description'    => $this->editData['description'] ?? null,
-            'statut'         => $this->editData['statut'],
-            'priorite'       => $this->editData['priorite'],
-            'echeance'       => $this->editData['echeance'] ?? null,
-            'responsable_id' => $this->editData['responsable_id'] ?: null,
+        $task = Task::findOrFail($this->taskId);
+        $task->update([
+            'nom' => $this->nom,
+            'description' => $this->description,
+            'statut' => $this->statut,
+            'priorite' => $this->priorite,
+            'echeance' => $this->echeance,
+            'responsable_id' => $this->responsable_id,
         ]);
 
-        $this->emitUp('taskUpdated');
+        $this->dispatch('taskUpdated');
         $this->closeModal();
-    }
-
-    public function deleteTask()
-    {
-        $this->task->delete();
-        $this->emitUp('taskDeleted');
-        $this->closeModal();
+        session()->flash('message', 'Tâche mise à jour avec succès.');
     }
 
     public function render()

@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Barres par sprint (horizontal pour gagner de la place)
+    // Barres par sprint
     @if($sprintProgress->count() > 0)
     const sp = document.getElementById('sprintProgressChart');
     if (sp) new Chart(sp, {

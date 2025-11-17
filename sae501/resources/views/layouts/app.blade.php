@@ -55,14 +55,19 @@
        class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
         <i class="bi bi-search text-2xl"></i>
         </a>
-        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
-            <i class="bi bi-kanban text-2xl"></i>
-        </a>
-        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
-            <i class="bi bi-calendar-event text-2xl"></i>
-        </a>
-        <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
-            <i class="bi bi-people-fill text-2xl"></i>
+         {{-- Dans l’aside (menu) --}}
+        <a href="{{ route('notifications.index') }}"
+           class="relative w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white transition"
+           title="Notifications">
+            <i class="bi bi-bell-fill text-2xl"></i>
+            @auth
+                @php $unreadCount = Auth::user()->unreadNotifications()->count(); @endphp
+                @if($unreadCount > 0)
+                    <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-600 text-white text-[11px] font-bold rounded-full flex items-center justify-center animate-pulse">
+                        {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                    </span>
+                @endif
+            @endauth
         </a>
         <a href="" class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 shadow-md hover:bg-primary/80 hover:text-white text-secondary transition">
             <i class="bi bi-gear-fill text-2xl"></i>
@@ -97,8 +102,10 @@
                         <i class="bi bi-x-lg"></i>
                     </button>
                     @auth
+                    @php $assignee = Auth::user(); @endphp
                         <div class="flex flex-col items-center mb-6">
-                            <i class="bi bi-person-circle text-6xl text-primary mb-2"></i>
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
+                            alt="{{ $assignee->name }}" class="w-20 h-20 rounded-full mb-4 object-cover shadow-md">
                             <div class="font-semibold text-xl mb-1">{{ Auth::user()->name }}</div>
                             <div class="text-gray-600 text-sm">{{ Auth::user()->email }}</div>
                         </div>
