@@ -18,7 +18,7 @@ class Task extends Model
         'echeance',
         'sprint_id',
         'epic_id',
-        'responsable_id', 
+        'responsable_id',
     ];
 
     protected $casts = [
@@ -36,6 +36,11 @@ class Task extends Model
     }
 
     public function assignee(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'responsable_id');
+    }
+
+    public function responsable()
     {
         return $this->belongsTo(User::class, 'responsable_id');
     }

@@ -67,7 +67,7 @@
         <div class="mb-4">
             <label for="responsable_id">Responsable</label>
             <select name="responsable_id" id="responsable_id" class="form-control">
-                @foreach(\App\Models\User::all() as $user)
+                @foreach($project->users as $user)
                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach
             </select>

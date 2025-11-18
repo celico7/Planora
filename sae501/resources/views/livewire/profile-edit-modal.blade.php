@@ -46,7 +46,7 @@
                         <i class="bi bi-person-fill-gear mr-2"></i>
                         {{ $updateMode === 'info' ? 'Modifier mon profil' : 'Changer mon mot de passe' }}
                     </h3>
-                    <button wire:click="closeModal" class="text-white/90 hover:text-white transition">
+                    <button wire:click="closeModal" class="text-black">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                         </svg>

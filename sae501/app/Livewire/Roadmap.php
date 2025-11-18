@@ -192,7 +192,7 @@ class Roadmap extends Component
             if ($progress >= 100) {
                 $tasks[] = [
                     'id' => 'milestone-' . $sprint->id,
-                    'name' => '🚀 Release ' . $sprint->nom,
+                    'name' => 'Release ' . $sprint->nom,
                     'start' => $sprint->end,
                     'end' => $sprint->end,
                     'progress' => 100,
