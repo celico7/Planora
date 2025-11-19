@@ -128,6 +128,9 @@
 .w-\[22rem\] {
   width: 22rem;
 }
+.w-fit {
+  width: fit-content;
+}
 .w-full {
   width: 100%;
 }
@@ -353,6 +356,21 @@
   --tw-gradient-from: #380036;
   --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
 }
+.via-\[\#1a0019\]\/70 {
+  --tw-gradient-via: color-mix(in oklab, #1a0019 70%, transparent);
+  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+.via-\[\#380036\] {
+  --tw-gradient-via: #380036;
+  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-via-stops);
+}
+.via-\[\#380036\]\/30 {
+  --tw-gradient-via: color-mix(in oklab, #380036 30%, transparent);
+  --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-via-stops);
+}
 .via-\[\#380036\]\/70 {
   --tw-gradient-via: color-mix(in oklab, #380036 70%, transparent);
   --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
@@ -360,6 +378,10 @@
 }
 .to-\[\#0CBABA\]\/45 {
   --tw-gradient-to: color-mix(in oklab, #0CBABA 45%, transparent);
+  --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+}
+.to-\[\#0CBABA\]\/75 {
+  --tw-gradient-to: color-mix(in oklab, #0CBABA 75%, transparent);
   --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
 }
 .object-cover {
@@ -628,6 +650,70 @@
 .rtl\:origin-top-right {
   &:where(:dir(rtl), [dir="rtl"], [dir="rtl"] *) {
     transform-origin: top right;
+  }
+}
+.dark\:border {
+  @media (prefers-color-scheme: dark) {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
+}
+.dark\:bg-gradient-to-br {
+  @media (prefers-color-scheme: dark) {
+    --tw-gradient-position: to bottom right in oklab;
+    background-image: linear-gradient(var(--tw-gradient-stops));
+  }
+}
+.dark\:from-\[\#1a0019\] {
+  @media (prefers-color-scheme: dark) {
+    --tw-gradient-from: #1a0019;
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+}
+.dark\:from-\[\#380036\] {
+  @media (prefers-color-scheme: dark) {
+    --tw-gradient-from: #380036;
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+}
+.dark\:via-\[\#0CBABA\]\/40 {
+  @media (prefers-color-scheme: dark) {
+    --tw-gradient-via: color-mix(in oklab, #0CBABA 40%, transparent);
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops);
+  }
+}
+.dark\:via-\[\#0CBABA\]\/60 {
+  @media (prefers-color-scheme: dark) {
+    --tw-gradient-via: color-mix(in oklab, #0CBABA 60%, transparent);
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops);
+  }
+}
+.dark\:via-\[\#0CBABA\]\/80 {
+  @media (prefers-color-scheme: dark) {
+    --tw-gradient-via: color-mix(in oklab, #0CBABA 80%, transparent);
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops);
+  }
+}
+.dark\:via-\[\#2d0033\]\/80 {
+  @media (prefers-color-scheme: dark) {
+    --tw-gradient-via: color-mix(in oklab, #2d0033 80%, transparent);
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops);
+  }
+}
+.dark\:shadow-\[0_20px_50px_rgba\(0\,0\,0\,0\.5\)\] {
+  @media (prefers-color-scheme: dark) {
+    --tw-shadow: 0 20px 50px var(--tw-shadow-color, rgba(0,0,0,0.5));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+}
+.dark\:shadow-none {
+  @media (prefers-color-scheme: dark) {
+    --tw-shadow: 0 0 #0000;
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
 }
 :root {
