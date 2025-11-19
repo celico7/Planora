@@ -15,11 +15,33 @@ class TaskPolicy
 
     public function update(User $user, Task $task): bool
     {
-        return $task->epic ? $user->can('update', $task->epic->sprint->project) : false;
+        if (!$task->epic) return false;
+
+        $project = $task->epic->sprint->project;
+
+        // Créateur du projet
+        if ($project->chef_projet === $user->id) {
+            return true;
+        }
+
+        // Admin ou Membre du projet
+        $pivot = $project->users()->where('utilisateur_id', $user->id)->first()?->pivot;
+        return $pivot && in_array($pivot->role, ['admin', 'membre']);
     }
 
     public function delete(User $user, Task $task): bool
     {
-        return $task->epic ? $user->can('update', $task->epic->sprint->project) : false;
+        if (!$task->epic) return false;
+
+        $project = $task->epic->sprint->project;
+
+        // Créateur du projet
+        if ($project->chef_projet === $user->id) {
+            return true;
+        }
+
+        // Admin ou Membre du projet
+        $pivot = $project->users()->where('utilisateur_id', $user->id)->first()?->pivot;
+        return $pivot && in_array($pivot->role, ['admin', 'membre']);
     }
 }

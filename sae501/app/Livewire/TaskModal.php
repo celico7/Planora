@@ -2,11 +2,14 @@
 
 namespace App\Livewire;
 
-use App\Models\Task;
 use Livewire\Component;
+use App\Models\Task;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TaskModal extends Component
 {
+    use AuthorizesRequests;
+
     public $showModal = false;
     public $taskId;
     public $nom;
@@ -21,7 +24,7 @@ class TaskModal extends Component
 
     public function openTask($taskId)
     {
-        $task = Task::with('sprint.project.users', 'assignee')->findOrFail($taskId);
+        $task = Task::with('epic.sprint.project.users', 'assignee')->findOrFail($taskId);
 
         $this->taskId = $task->id;
         $this->nom = $task->nom;
@@ -30,7 +33,7 @@ class TaskModal extends Component
         $this->priorite = $task->priorite;
         $this->echeance = $task->echeance ? $task->echeance->format('Y-m-d') : null;
         $this->responsable_id = $task->responsable_id;
-        $this->projectUsers = $task->sprint->project->users;
+        $this->projectUsers = $task->epic->sprint->project->users;
 
         $this->showModal = true;
     }
@@ -52,6 +55,9 @@ class TaskModal extends Component
         ]);
 
         $task = Task::findOrFail($this->taskId);
+
+        $this->authorize('update', $task);
+
         $task->update([
             'nom' => $this->nom,
             'description' => $this->description,
@@ -66,8 +72,34 @@ class TaskModal extends Component
         session()->flash('message', 'Tâche mise à jour avec succès.');
     }
 
+    public function deleteTask()
+    {
+        if (!$this->taskId) {
+            return;
+        }
+
+        $task = Task::with('epic.sprint.project')->findOrFail($this->taskId);
+
+        $this->authorize('delete', $task);
+
+        $project = $task->epic->project;
+        $sprint = $task->epic->sprint;
+
+        $task->delete();
+
+        $this->closeModal();
+
+        session()->flash('success', 'Tâche supprimée avec succès.');
+
+        return redirect()->route('projects.sprints.show', [$project, $sprint]);
+    }
+
     public function render()
     {
-        return view('livewire.task-modal');
+        $task = $this->taskId ? Task::with('epic')->find($this->taskId) : null;
+
+        return view('livewire.task-modal', [
+            'task' => $task
+        ]);
     }
 }

@@ -146,12 +146,13 @@
                                 <i class="bi bi-kanban-fill mr-2"></i>
                                 <span>Vue Kanban</span>
                             </a>
-                            @can('update', $project)
+                            @can('update', $sprint)
                             <div class="relative group">
                                 <button class="p-2 rounded hover:bg-gray-200 dark:hover:bg-dark-border text-gray-700 dark:text-dark-text" onclick="event.stopPropagation(); this.nextElementSibling.classList.toggle('hidden');">
                                     <i class="bi bi-three-dots-vertical text-xl"></i>
                                 </button>
                                 <div class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-dark-card border border-gray-200 dark:border-dark-border rounded shadow-lg z-30 group-hover:block">
+                                    @can('delete', $sprint)
                                     <form method="POST" action="{{ route('projects.sprints.destroy', ['project' => $project->id, 'sprint' => $sprint->id]) }}"
                                         onsubmit="return confirm('Supprimer ce sprint ?');">
                                         @csrf @method('DELETE')
@@ -159,6 +160,7 @@
                                             <i class="bi bi-trash mr-1"></i> Supprimer le sprint
                                         </button>
                                     </form>
+                                    @endcan
                                     <a href="{{ route('projects.sprints.edit', ['project' => $project->id, 'sprint' => $sprint->id]) }}"
                                         class="w-full text-left text-gray-600 dark:text-dark-text px-4 py-2 flex items-center hover:bg-gray-100 dark:hover:bg-dark-hover">
                                         <i class="bi bi-pencil mr-1"></i> Modifier le sprint

@@ -82,6 +82,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('projects.sprints.epics', EpicController::class);
         Route::resource('projects.sprints', SprintController::class);
         Route::resource('projects.sprints.epics.tasks', TaskController::class);
+        Route::delete('/projects/{project}/sprints/{sprint}/epics/{epic}/tasks/{task}', [TaskController::class, 'destroy'])
+            ->name('projects.sprints.epics.tasks.destroy');
     });
 
     // Recherche de tâches

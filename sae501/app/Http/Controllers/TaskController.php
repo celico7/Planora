@@ -95,11 +95,12 @@ class TaskController extends Controller
 
     public function destroy(Project $project, Sprint $sprint, Epic $epic, Task $task)
     {
-        $this->authorize('update', $project);
+        $this->authorize('delete', $task);
+
         $task->delete();
 
         return redirect()->route('projects.sprints.show', [$project, $sprint])
-            ->with('success', 'Tâche supprimée avec succès !');
+            ->with('success', 'Tâche supprimée avec succès.');
     }
 
     public function updateStatus(Request $request, Task $task)

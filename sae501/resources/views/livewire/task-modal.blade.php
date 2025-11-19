@@ -1,5 +1,5 @@
 <div>
-@if($showModal)
+@if($showModal && $taskId)
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 transition-opacity">
     <div class="bg-white dark:bg-dark-card w-full max-w-lg rounded-lg shadow-lg dark:shadow-2xl border dark:border-dark-border p-8 relative">
         <button wire:click="closeModal" class="absolute top-3 right-4 text-2xl text-gray-400 dark:text-dark-muted hover:text-black dark:hover:text-dark-text">&times;</button>
@@ -61,9 +61,30 @@
                 @error('responsable_id') <span class="text-red-500 dark:text-red-400 text-xs">{{ $message }}</span> @enderror
             </div>
 
-            <div class="flex gap-3 pt-2">
-                <button type="submit" class="flex-1 bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 dark:hover:bg-primary/80">Enregistrer</button>
-                <button type="button" wire:click="closeModal" class="flex-1 bg-gray-200 dark:bg-dark-hover text-gray-700 dark:text-dark-text px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-dark-border">Annuler</button>
+            <div class="flex items-center justify-between gap-3 pt-4 border-t dark:border-dark-border">
+                @if($task)
+                    @can('delete', $task)
+                    <button type="button"
+                            wire:click="deleteTask"
+                            wire:confirm="Êtes-vous sûr de vouloir supprimer cette tâche ?"
+                            class="px-4 py-2 bg-red-500 dark:bg-red-600 text-white rounded-lg hover:bg-red-600 dark:hover:bg-red-700 transition font-semibold">
+                        <i class="bi bi-trash mr-2"></i>Supprimer
+                    </button>
+                    @endcan
+                @endif
+
+                <div class="flex gap-2 ml-auto">
+                    <button type="button"
+                            wire:click="closeModal"
+                            class="px-4 py-2 bg-gray-200 dark:bg-dark-hover text-gray-700 dark:text-dark-text rounded-lg hover:bg-gray-300 dark:hover:bg-dark-border transition">
+                        Annuler
+                    </button>
+                    <button type="button"
+                            wire:click="save"
+                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 dark:hover:bg-primary/80 transition font-semibold">
+                        <i class="bi bi-check-circle mr-2"></i>Enregistrer
+                    </button>
+                </div>
             </div>
         </form>
     </div>
