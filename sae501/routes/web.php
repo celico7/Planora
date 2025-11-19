@@ -89,6 +89,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view('tasks.search');
     })->name('tasks.search');
 
+    Route::patch('/tasks/{task}/update-status', [TaskController::class, 'updateStatus']);
+
     // Notifications
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');

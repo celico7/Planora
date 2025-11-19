@@ -94,7 +94,7 @@
                             @forelse($epic->tasks as $task)
                                 @can('update', $epic)
                                 <div class="bg-white dark:bg-dark-hover border border-gray-200 dark:border-dark-border shadow dark:shadow-none rounded-lg p-3 mb-2 hover:shadow-lg dark:hover:shadow-xl transition-shadow cursor-pointer"
-                                     wire:click="openTask({{ $task->id }})">
+                                     wire:click="openTask({{ $task->id }})" data-task-id="{{ $task->id }}">
                                     <div class="font-semibold text-secondary dark:text-primary mb-1">{{ $task->nom }}</div>
                                     <div class="text-xs text-gray-500 dark:text-dark-muted">{{ $task->description }}</div>
                                     <div class="flex flex-col gap-2 mt-2">
@@ -247,7 +247,7 @@
     {{-- Colonnes Kanban à droite --}}
     <div class="flex gap-6 min-w-[54rem] flex-shrink-0">
         @foreach(['à faire', 'en cours', 'terminé'] as $statut)
-            <div class="min-w-[18rem] flex flex-col shadow-md dark:shadow-none p-4 rounded-lg h-full {{ $kanbanColors[$statut] }} border dark:border-dark-border">
+            <div class="flex-1 flex flex-col shadow-md dark:shadow-none p-4 rounded-lg h-full {{ $kanbanColors[$statut] }} border dark:border-dark-border kanban-column" data-status="{{ $statut }}">
                 <h2 class="font-bold text-lg {{ $kanbanTitleColors[$statut] }} mb-4 flex items-center">
                     <i class="bi {{ $kanbanIcons[$statut] }} mr-2"></i>
                     {{ $kanbanNames[$statut] }}
@@ -255,7 +255,7 @@
                         {{ $kanban[$statut]->count() }}
                     </span>
                 </h2>
-                <div class="flex flex-col gap-3 flex-1">
+                <div class="flex flex-col gap-3 flex-1 kanban-tasks-container">
                     @forelse($kanban[$statut] as $task)
                         @php
                             $epicId = isset($task->epic) && $task->epic ? $task->epic->id : null;
@@ -264,29 +264,34 @@
                         @endphp
 
                         @can('update', $task->epic)
-                        <div class="bg-white dark:bg-dark-hover border border-gray-200 dark:border-dark-border shadow dark:shadow-none rounded-lg p-3 mb-2 hover:shadow-lg dark:hover:shadow-xl transition-shadow cursor-pointer"
-                             wire:click="openTask({{ $task->id }})">
-                            <span class="inline-block px-2 py-1 rounded text-[10px] font-semibold tracking-wide"
-                                  style="background: {{ $badgeColor }}; color: {{ $badgeText }};
-                                         border: 1px solid {{ $badgeColor }};">
-                                <i class="bi bi-bookmark-fill mr-1"></i>
-                                {{ isset($task->epic) && $task->epic ? $task->epic->nom : 'Sans epic' }}
-                            </span>
-                            <h3 class="font-semibold text-secondary dark:text-primary mb-2 mt-2">{{ $task->nom ?? 'Sans nom' }}</h3>
-                            <p class="text-xs text-gray-500 dark:text-dark-muted mb-3">{{ $task->description ?? '' }}</p>
-                            <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-dark-muted">
-                                <i class="bi bi-calendar-event mr-1"></i> {{ $task->echeance ? $task->echeance->format('d/m/Y') : 'Non définie' }}
-                            </div>
-                            <div class="flex items-center justify-end mt-2">
-                                @php $assignee = $task->assignee; @endphp
-                                @if($assignee)
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
-                                         alt="{{ $assignee->name }}"
-                                         class="w-6 h-6 rounded-full ring-2 ring-white dark:ring-dark-border" title="{{ $assignee->name }}">
-                                @else
-                                    <div class="w-6 h-6 rounded-full bg-gray-200 dark:bg-dark-hover flex items-center justify-center text-[10px] text-gray-600 dark:text-dark-muted"
-                                         title="Non assignée">?</div>
-                                @endif
+                        <div class="bg-white dark:bg-dark-hover border border-gray-200 dark:border-dark-border shadow dark:shadow-none rounded-lg p-3 mb-2 hover:shadow-lg dark:hover:shadow-xl transition-shadow"
+                             data-task-id="{{ $task->id }}">
+                            <div class="flex items-start gap-2">
+                                <i class="bi bi-grip-vertical cursor-grab text-gray-400 dark:text-gray-500 flex-shrink-0 mt-1"></i>
+                                <div class="flex-1 cursor-pointer" wire:click="openTask({{ $task->id }})">
+                                    <span class="inline-block px-2 py-1 rounded text-[10px] font-semibold tracking-wide"
+                                          style="background: {{ $badgeColor }}; color: {{ $badgeText }};
+                                                 border: 1px solid {{ $badgeColor }};">
+                                        <i class="bi bi-bookmark-fill mr-1"></i>
+                                        {{ isset($task->epic) && $task->epic ? $task->epic->nom : 'Sans epic' }}
+                                    </span>
+                                    <h3 class="font-semibold text-secondary dark:text-primary mb-2 mt-2">{{ $task->nom ?? 'Sans nom' }}</h3>
+                                    <p class="text-xs text-gray-500 dark:text-dark-muted mb-3">{{ $task->description ?? '' }}</p>
+                                    <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-dark-muted">
+                                        <i class="bi bi-calendar-event mr-1"></i> {{ $task->echeance ? $task->echeance->format('d/m/Y') : 'Non définie' }}
+                                    </div>
+                                    <div class="flex items-center justify-end mt-2">
+                                        @php $assignee = $task->assignee; @endphp
+                                        @if($assignee)
+                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($assignee->name) }}&background={{ $assignee->avatar_color ?? '0cbaba' }}&color=fff"
+                                                 alt="{{ $assignee->name }}"
+                                                 class="w-6 h-6 rounded-full ring-2 ring-white dark:ring-dark-border" title="{{ $assignee->name }}">
+                                        @else
+                                            <div class="w-6 h-6 rounded-full bg-gray-200 dark:bg-dark-hover flex items-center justify-center text-[10px] text-gray-600 dark:text-dark-muted"
+                                                 title="Non assignée">?</div>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         @else
@@ -325,3 +330,44 @@
     </div>
     @livewire('task-modal')
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const kanbanColumns = document.querySelectorAll('.kanban-tasks-container');
+
+        kanbanColumns.forEach(container => {
+            new Sortable(container, {
+                group: 'kanban',
+                animation: 150,
+                handle: '.bi-grip-vertical',
+                ghostClass: 'opacity-50',
+                dragClass: 'opacity-75',
+                onEnd: function (evt) {
+                    const taskId = evt.item.dataset.taskId;
+                    const newStatus = evt.to.closest('[data-status]').dataset.status;
+
+                    fetch(`/tasks/${taskId}/update-status`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ status: newStatus })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            @this.call('$refresh');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de la mise à jour du statut', error);
+                        evt.item.remove();
+                        evt.from.insertBefore(evt.item, evt.from.children[evt.oldIndex]);
+                    });
+                }
+            });
+        });
+    });
+</script>

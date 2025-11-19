@@ -102,5 +102,12 @@ class TaskController extends Controller
             ->with('success', 'Tâche supprimée avec succès !');
     }
 
+    public function updateStatus(Request $request, Task $task)
+    {
+        $task->statut = $request->input('status');
+        $task->save();
+
+        return response()->json(['success' => true]);
+    }
 
 }

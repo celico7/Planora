@@ -204,6 +204,12 @@
 .transform {
   transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
 }
+.cursor-grab {
+  cursor: grab;
+}
+.cursor-move {
+  cursor: move;
+}
 .cursor-pointer {
   cursor: pointer;
 }
@@ -426,6 +432,9 @@
 }
 .opacity-0 {
   opacity: 0%;
+}
+.opacity-50 {
+  opacity: 50%;
 }
 .opacity-75 {
   opacity: 75%;
