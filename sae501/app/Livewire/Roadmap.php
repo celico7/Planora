@@ -8,9 +8,12 @@ use App\Models\Sprint;
 use App\Models\Epic;
 use App\Models\Task;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Roadmap extends Component
 {
+    use AuthorizesRequests;
+
     public $project;
     public $sprints = [];
     public $epics = [];
@@ -251,19 +254,26 @@ class Roadmap extends Component
         $this->applyFilters();
     }
 
-    public function deleteEpic($epicId)
+    public function deleteSprint(int $sprintId)
     {
-        Epic::findOrFail($epicId)->delete();
-        session()->flash('success', 'Epic supprimé !');
+        $sprint = \App\Models\Sprint::findOrFail($sprintId);
+        $project = $sprint->project;
+        $this->authorize('delete', $project);
+
+        $sprint->delete();
+        session()->flash('success', 'Sprint supprimé !');
         $this->loadData();
         $this->calculateStats();
         $this->dispatch('ganttRefresh');
     }
 
-    public function deleteSprint($sprintId)
+    public function deleteEpic(int $epicId)
     {
-        Sprint::findOrFail($sprintId)->delete();
-        session()->flash('success', 'Sprint supprimé !');
+        $epic = \App\Models\Epic::findOrFail($epicId);
+        $this->authorize('delete', $epic);
+
+        $epic->delete();
+        session()->flash('success', 'Epic supprimé !');
         $this->loadData();
         $this->calculateStats();
         $this->dispatch('ganttRefresh');

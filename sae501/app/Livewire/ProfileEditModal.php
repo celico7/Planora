@@ -80,43 +80,28 @@ class ProfileEditModal extends Component
 
     public function updatePassword()
     {
-        // Validation stricte AVANT tout traitement
-        try {
-            $this->validate([
-                'current_password' => ['required', 'string'],
-                'password' => ['required', 'string', 'min:8'],
-                'password_confirmation' => ['required', 'string', 'same:password'],
-            ], [
-                'current_password.required' => 'Veuillez renseigner votre mot de passe actuel.',
-                'password.required' => 'Veuillez renseigner un nouveau mot de passe.',
-                'password.min' => 'Le mot de passe doit contenir au moins 8 caractères.',
-                'password_confirmation.required' => 'Veuillez confirmer votre nouveau mot de passe.',
-                'password_confirmation.same' => 'La confirmation du mot de passe ne correspond pas.',
-            ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Forcer l'affichage des erreurs sans fermer le modal
-            throw $e;
-        }
+        $this->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', Password::min(12)->numbers()->symbols()],
+            'password_confirmation' => 'required',
+        ], [
+            'current_password.required' => 'Le mot de passe actuel est requis.',
+            'current_password.current_password' => 'Le mot de passe actuel est incorrect.',
+            'password.required' => 'Le nouveau mot de passe est requis.',
+            'password.min' => 'Le mot de passe doit contenir au moins 12 caractères.',
+            'password.numbers' => 'Le mot de passe doit contenir au moins un chiffre.',
+            'password.symbols' => 'Le mot de passe doit contenir au moins un symbole.',
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+            'password_confirmation.required' => 'La confirmation du mot de passe est requise.',
+        ]);
 
-        // Vérifier que le mot de passe actuel est correct
-        if (!Hash::check($this->current_password, Auth::user()->password)) {
-            $this->addError('current_password', 'Le mot de passe actuel est incorrect.');
-            return;
-        }
-
-        // Tout est OK, on met à jour
-        Auth::user()->update([
+        auth()->user()->update([
             'password' => Hash::make($this->password),
         ]);
 
+        $this->reset(['current_password', 'password', 'password_confirmation']);
+        $this->showModal = false;
         session()->flash('message', 'Mot de passe mis à jour avec succès !');
-
-        // Réinitialiser les champs
-        $this->current_password = '';
-        $this->password = '';
-        $this->password_confirmation = '';
-
-        $this->closeModal();
     }
 
     public function render()

@@ -33,28 +33,28 @@
                 </span>
             </div>
             <div class="text-sm text-purple-600 dark:text-purple-400 font-semibold">Sprints</div>
-            <div class="text-3xl font-bold text-purple-700 dark:text-purple-300">{{ $stats['total_sprints'] }}</div>
+            <div class="text-3xl font-bold text-purple-700">{{ $stats['total_sprints'] }}</div>
         </div>
 
         <div class="bg-gradient-blue dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4 hover:shadow-lg dark:hover:shadow-xl transition">
             <i class="bi bi-box-seam text-3xl text-blue-600 dark:text-blue-400 mb-2"></i>
             <div class="text-sm text-blue-600 dark:text-blue-400 font-semibold">Epics</div>
-            <div class="text-3xl font-bold text-blue-700 dark:text-blue-300">{{ $stats['total_epics'] }}</div>
+            <div class="text-3xl font-bold text-blue-700">{{ $stats['total_epics'] }}</div>
         </div>
 
         <div class="bg-gradient-green dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg p-4 hover:shadow-lg dark:hover:shadow-xl transition">
             <div class="flex items-center justify-between mb-2">
                 <i class="bi bi-check-circle-fill text-3xl text-green-600 dark:text-green-400"></i>
-                <span class="text-xs font-semibold text-green-700 dark:text-green-400">{{ $stats['completion_rate'] }}%</span>
+                <span class="text-xs font-semibold text-green-700">{{ $stats['completion_rate'] }}%</span>
             </div>
             <div class="text-sm text-green-600 dark:text-green-400 font-semibold">Terminées</div>
-            <div class="text-3xl font-bold text-green-700 dark:text-green-300">{{ $stats['completed_tasks'] }}</div>
+            <div class="text-3xl font-bold text-green-700">{{ $stats['completed_tasks'] }}</div>
         </div>
 
         <div class="bg-gradient-orange dark:bg-orange-900/30 border border-orange-200 dark:border-orange-700 rounded-lg p-4 hover:shadow-lg dark:hover:shadow-xl transition">
             <i class="bi bi-hourglass-split text-3xl text-orange-600 dark:text-orange-400 mb-2"></i>
             <div class="text-sm text-orange-600 dark:text-orange-400 font-semibold">En cours</div>
-            <div class="text-3xl font-bold text-orange-700 dark:text-orange-300">{{ $stats['in_progress_tasks'] }}</div>
+            <div class="text-3xl font-bold text-orange-700">{{ $stats['in_progress_tasks'] }}</div>
         </div>
 
         <div class="bg-gradient-red dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg p-4 hover:shadow-lg dark:hover:shadow-xl transition">
@@ -67,7 +67,7 @@
                 @endif
             </div>
             <div class="text-sm text-red-600 dark:text-red-400 font-semibold">En retard</div>
-            <div class="text-3xl font-bold text-red-700 dark:text-red-300">{{ $stats['overdue_tasks'] }}</div>
+            <div class="text-3xl font-bold text-red-700">{{ $stats['overdue_tasks'] }}</div>
         </div>
     </div>
 
@@ -168,11 +168,14 @@
                                     <i class="bi bi-pencil mr-2"></i>Modifier
                                 </a>
                                 @endcan
+
+                                @can('delete', $project)
                                 <button wire:click="deleteSprint({{ $sprint->id }})"
                                         wire:confirm="Supprimer ce sprint ?"
                                         class="block w-full text-left px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400">
                                     <i class="bi bi-trash mr-2"></i>Supprimer
                                 </button>
+                                @endcan
                             </div>
                         </div>
                     </div>
@@ -222,13 +225,7 @@
                                      title="Epic {{ $epic->nom }} {{ $epicProgress }}%">
                                 </div>
                             </div>
-                            <div class="opacity-0 group-hover:opacity-100 transition">
-                                <button wire:click="deleteEpic({{ $epic->id }})"
-                                        wire:confirm="Supprimer cet epic ?"
-                                        class="p-2 rounded hover:bg-red-100 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
+    
                         </div>
                     @endforeach
                 </div>

@@ -148,6 +148,9 @@
                                         <i class="bi" :class="showNew ? 'bi-eye-slash' : 'bi-eye'"></i>
                                     </button>
                                 </div>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-dark-muted">
+                                    <i class="bi bi-info-circle mr-1"></i>Minimum 12 caractères, 1 chiffre et 1 symbole
+                                </p>
                                 @error('password')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400"><i class="bi bi-exclamation-triangle-fill mr-1"></i>{{ $message }}</p>
                                 @enderror
