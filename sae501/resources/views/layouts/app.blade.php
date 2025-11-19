@@ -29,7 +29,7 @@
     <div class="min-h-screen {{ !auth()->check() ? '' : 'bg-gray-100 dark:bg-dark-bg' }}">
         @auth
             @if(!auth()->user()->hasVerifiedEmail())
-                <!-- En-tête simplifié pour utilisateurs non vérifiés -->
+                <!-- Header simplifié pour utilisateurs non vérifiés -->
                 <nav class="bg-white dark:bg-dark-card border-b border-gray-100 dark:border-dark-border">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div class="flex justify-between h-16">
@@ -49,7 +49,7 @@
                     </div>
                 </nav>
             @else
-                <!-- Navigation normale pour utilisateurs vérifiés -->
+                <!-- Navigation pour utilisateurs vérifiés -->
                 <header class="fixed top-0 left-0 z-40 w-full">
                     <div class="bg-secondary dark:bg-dark-card backdrop-blur-sm border-b border-[#0cbaba57] dark:border-dark-border shadow-[0_2px_16px_0_#38003657] dark:shadow-lg">
                         <div class="max-w-6xl mx-auto px-6 flex items-center justify-between h-[5rem]">
@@ -68,21 +68,21 @@
                 </header>
 
                 @if (!request()->routeIs('login') && !request()->routeIs('register'))
-                <!-- Sidebar avec dégradé conservé en mode sombre -->
+                <!-- Sidebar -->
                 <aside
                     class="rounded-tr-lg fixed top-20 left-0 z-20 flex flex-col items-center gap-6 w-20 h-[calc(100vh-5rem)] bg-gradient-to-b from-[#380036] via-[#380036]/70 to-[#0CBABA]/45 dark:via-[#0CBABA]/60 dark:to-primary/30 shadow-xl py-6 backdrop-blur-lg overflow-visible"
                     aria-label="Sidebar navigation">
                     <nav class="flex-1 flex flex-col gap-6 items-center justify-start mt-4">
                         <a href="{{ route('projects.create') }}" title="Créer un nouveau projet"
-                           class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 dark:bg-white/10 shadow-md hover:bg-primary/80 hover:text-white text-secondary dark:text-white transition">
+                           class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 dark:bg-white/10 shadow-md hover:bg-primary/80 dark:hover:bg-primary hover:text-white text-secondary dark:text-white transition">
                             <i class="bi bi-plus-circle-fill text-2xl"></i>
                         </a>
                         <a href="{{ route('tasks.search') }}" title="Rechercher des tâches"
-                           class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 dark:bg-white/10 shadow-md hover:bg-primary/80 hover:text-white text-secondary dark:text-white transition">
+                           class="w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 dark:bg-white/10 shadow-md hover:bg-primary/80 dark:hover:bg-primary hover:text-white text-secondary dark:text-white transition">
                             <i class="bi bi-search text-2xl"></i>
                         </a>
                         <a href="{{ route('notifications.index') }}"
-                           class="relative w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 dark:bg-white/10 shadow-md hover:bg-primary/80 hover:text-white text-secondary dark:text-white transition"
+                           class="relative w-12 h-12 flex items-center justify-center rounded-xl bg-white/60 dark:bg-white/10 shadow-md hover:bg-primary/80 dark:hover:bg-primary hover:text-white text-secondary dark:text-white transition"
                            title="Notifications">
                             <i class="bi bi-bell-fill text-2xl"></i>
                             @php $unreadCount = Auth::user()->unreadNotifications()->count(); @endphp
@@ -93,14 +93,13 @@
                             @endif
                         </a>
 
-                        <!-- Drawer Profil global avec mode sombre -->
+                        <!-- Drawer Profil avec mode sombre -->
                         <div x-data="{ open: false }" class="relative flex flex-col items-center">
                             <button
                                 @click="open = !open"
-                                class="w-12 h-12 flex items-center justify-center rounded-full mb-2 bg-white/60 dark:bg-white/10 shadow-md hover:bg-primary/80 hover:text-white text-secondary dark:text-white transition cursor-pointer"
+                                class="w-12 h-12 flex items-center justify-center rounded-full mb-2 bg-white/60 dark:bg-white/10 shadow-md hover:bg-primary/80 dark:hover:bg-primary hover:text-white text-secondary dark:text-white transition cursor-pointer"
                                 title="Profil"
-                                id="btn-profile"
-                            >
+                                id="btn-profile">
                                 <i class="bi bi-person-circle text-2xl"></i>
                             </button>
 
