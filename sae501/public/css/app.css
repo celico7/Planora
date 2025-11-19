@@ -3,6 +3,9 @@
 .pointer-events-none {
   pointer-events: none;
 }
+.visible {
+  visibility: visible;
+}
 .sr-only {
   position: absolute;
   width: 1px;
@@ -163,6 +166,9 @@
 }
 .flex-1 {
   flex: 1;
+}
+.flex-shrink {
+  flex-shrink: 1;
 }
 .flex-shrink-0 {
   flex-shrink: 0;
@@ -554,6 +560,13 @@
   &:hover {
     @media (hover: hover) {
       background-color: #380036;
+    }
+  }
+}
+.hover\:text-\[\#0CBABA\] {
+  &:hover {
+    @media (hover: hover) {
+      color: #0CBABA;
     }
   }
 }

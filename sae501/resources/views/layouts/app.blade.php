@@ -17,9 +17,8 @@
     @yield('styles')
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col @yield('body-class') relative">
-
-    <div class="min-h-screen bg-gray-100">
+<body class="font-sans antialiased @yield('body-class')">
+    <div class="min-h-screen {{ !auth()->check() ? '' : 'bg-gray-100' }}">
         @auth
             @if(!auth()->user()->hasVerifiedEmail())
                 <!-- En-tête simplifié pour utilisateurs non vérifiés -->
@@ -143,10 +142,14 @@
         @endauth
 
         <!-- Page Content -->
-        <main class="{{ auth()->check() && auth()->user()->hasVerifiedEmail() ? 'pt-24' : '' }} shadow-lg p-6 relative flex-1 mb-6">
-            <div class="max-w-6xl mx-auto">
+        <main class="{{ auth()->check() && auth()->user()->hasVerifiedEmail() && !request()->routeIs('login') && !request()->routeIs('register') ? 'pt-24 ml-20 shadow-lg p-6' : '' }} relative flex-1 mb-6">
+            @if(auth()->check() && auth()->user()->hasVerifiedEmail() && !request()->routeIs('login') && !request()->routeIs('register'))
+                <div class="max-w-6xl mx-auto">
+                    @yield('content')
+                </div>
+            @else
                 @yield('content')
-            </div>
+            @endif
         </main>
     </div>
 

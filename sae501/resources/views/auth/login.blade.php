@@ -46,6 +46,7 @@
 @endsection
 
 @section('content')
+
 <div class="relative min-h-[85vh] flex flex-row">
     <span class="blob"></span>
     <span class="blob2"></span>
@@ -122,4 +123,5 @@
 <footer class="footer-landing w-full py-4 px-0 text-white text-center mt-auto absolute bottom-0 left-0 z-30">
         &copy; {{ date('Y') }} Célia Hoffmann. Tous droits réservés.
 </footer>
+
 @endsection
