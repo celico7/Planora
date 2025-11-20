@@ -46,12 +46,13 @@
 @endsection
 
 @section('content')
-<div class="relative min-h-[85vh] flex flex-col">
+
+<div class="relative min-h-[85vh] flex flex-row">
     <span class="blob"></span>
     <span class="blob2"></span>
     <!-- Main -->
     <main class="flex-1 flex items-center justify-center pb-8 z-10 w-full">
-        <div class="w-full max-w-8xl flex flex-col md:flex-row bg-transparent shadow-none">
+        <div class="w-full max-w-8xl flex flex-row md:flex-row bg-transparent shadow-none">
             <!-- Bloc visuel Planora à gauche -->
             <div class="flex-1 flex flex-col justify-center items-center text-center py-10 md:py-0 md:px-8 select-none">
                 <h1 class="text-5xl md:text-6xl font-extrabold" style="color:#0CBABA;letter-spacing:2px;text-shadow:0 4px 32px #38003699;">
@@ -83,8 +84,18 @@
                     <!-- Password -->
                     <div>
                         <label for="password" class="block text-sm font-medium" style="color:#380036">Mot de passe</label>
-                        <input id="password" type="password" name="password" required
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#0CBABA] focus:ring-[#0CBABA] p-2 bg-white/95" />
+                        <div class="relative" x-data="{ showPassword: false }">
+                            <input :type="showPassword ? 'text' : 'password'"
+                                   id="password"
+                                   name="password"
+                                   required
+                                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-[#0CBABA] focus:ring-[#0CBABA] p-2 pr-10 bg-white/95" />
+                            <button type="button"
+                                    @click="showPassword = !showPassword"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                <i class="bi" :class="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+                            </button>
+                        </div>
                         @error('password')
                             <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                         @enderror
@@ -112,4 +123,5 @@
 <footer class="footer-landing w-full py-4 px-0 text-white text-center mt-auto absolute bottom-0 left-0 z-30">
         &copy; {{ date('Y') }} Célia Hoffmann. Tous droits réservés.
 </footer>
+
 @endsection
