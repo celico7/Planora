@@ -2,37 +2,46 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'epic_id',
-        'sprint_id',
         'nom',
         'description',
-        'responsable_id',
-        'echeance',
         'statut',
         'priorite',
+        'echeance',
+        'sprint_id',
+        'epic_id',
+        'responsable_id',
     ];
 
-    public function sprint() {
-    return $this->belongsTo(Sprint::class);
+    protected $casts = [
+        'echeance' => 'date',
+    ];
+
+    public function sprint(): BelongsTo
+    {
+        return $this->belongsTo(Sprint::class);
     }
 
-    public function epic() {
+    public function epic(): BelongsTo
+    {
         return $this->belongsTo(Epic::class);
     }
 
-    public function project()
+    public function assignee(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(User::class, 'responsable_id');
     }
 
     public function responsable()
     {
-        return $this->belongsTo(\App\Models\User::class, 'responsable_id');
-    }   
-
+        return $this->belongsTo(User::class, 'responsable_id');
+    }
 }
