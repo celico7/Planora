@@ -6,8 +6,8 @@
     <h1 class="font-bold text-2xl mb-2 text-gray-800 dark:text-dark-text">{{ $epic->nom }}</h1>
     <p class="mb-3 text-gray-600 dark:text-dark-muted">{{ $epic->description }}</p>
     <div class="text-gray-700 dark:text-dark-text mb-3">
-        <span class="mr-3"><i class="bi bi-calendar-event text-primary mr-1"></i>Début : {{ $epic->begining }}</span>
-        <span><i class="bi bi-calendar-check text-primary mr-1"></i>Fin : {{ $epic->end }}</span>
+        <span class="mr-3"><i class="bi bi-calendar-event text-primary dark:text-primary mr-1"></i>Début : {{ $epic->begining }}</span>
+        <span><i class="bi bi-calendar-check text-primary dark:text-primary mr-1"></i>Fin : {{ $epic->end }}</span>
     </div>
     <div class="mt-2">
         @php

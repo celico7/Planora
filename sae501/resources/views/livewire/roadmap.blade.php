@@ -225,7 +225,7 @@
                                      title="Epic {{ $epic->nom }} {{ $epicProgress }}%">
                                 </div>
                             </div>
-    
+
                         </div>
                     @endforeach
                 </div>
@@ -352,9 +352,9 @@ async function initializeGantt() {
             }
         }, 300);
 
-        console.log('✅ Gantt initialisé avec succès');
+        console.log('Gantt initialisé avec succès');
     } catch (error) {
-        console.error('❌ Erreur Gantt:', error);
+        console.error(' Erreur Gantt:', error);
         ganttEl.innerHTML = `<div class="text-center text-red-500 dark:text-red-400 py-12">Erreur: ${error.message}</div>`;
     }
 }

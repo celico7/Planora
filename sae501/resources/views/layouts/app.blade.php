@@ -177,22 +177,22 @@
 
             function tryLoadScript() {
                 if (currentCdnIndex >= cdnUrls.length) {
-                    console.error('❌ Tous les CDN ont échoué');
+                    console.error('Tous les CDN ont échoué');
                     resolve(false);
                     return;
                 }
 
                 const script = document.createElement('script');
                 const url = cdnUrls[currentCdnIndex];
-                console.log(`⏳ Tentative de chargement depuis: ${url}`);
+                console.log(`Tentative de chargement depuis: ${url}`);
 
                 script.src = url;
 
                 script.onload = () => {
-                    console.log(`✅ Script chargé depuis: ${url}`);
+                    console.log(`Script chargé depuis: ${url}`);
                     setTimeout(() => {
                         if (window.Gantt) {
-                            console.log('✅ Frappe Gantt constructeur disponible');
+                            console.log('Frappe Gantt constructeur disponible');
                             window.ganttLoaded = true;
                             resolve(true);
                         } else {
@@ -204,7 +204,7 @@
                 };
 
                 script.onerror = (error) => {
-                    console.warn(`⚠️ Échec chargement depuis ${url}:`, error);
+                    console.warn(`Échec chargement depuis ${url}:`, error);
                     currentCdnIndex++;
                     tryLoadScript();
                 };
