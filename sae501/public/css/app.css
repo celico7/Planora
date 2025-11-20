@@ -134,9 +134,6 @@
 .flex-1 {
   flex: 1;
 }
-.flex-shrink {
-  flex-shrink: 1;
-}
 .flex-shrink-0 {
   flex-shrink: 0;
 }
@@ -172,9 +169,6 @@
 }
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.grid-cols-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -331,14 +325,8 @@
 .text-start {
   text-align: start;
 }
-.text-\[9px\] {
-  font-size: 9px;
-}
 .text-\[10px\] {
   font-size: 10px;
-}
-.text-\[11px\] {
-  font-size: 11px;
 }
 .text-\[\#0cbaba\] {
   color: #0cbaba;
