@@ -3,39 +3,43 @@
 @section('title', 'Mon compte')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 py-12 px-6">
+<div class="min-h-screen bg-gray-50 dark:bg-dark-bg py-12 px-6">
     <div class="max-w-5xl mx-auto">
-        <!-- En-tête -->
+        <!-- Header -->
         <div class="flex items-center justify-between mb-8">
-            <h1 class="text-3xl font-bold text-secondary">Mon compte</h1>
-            <a href="{{ route('profile.edit') }}"
-               class="px-4 py-2 rounded-md bg-primary text-white hover:bg-[#089a8f] transition">
-                Modifier le profil
+            <h1 class="text-3xl font-bold text-secondary dark:text-primary">Mon compte</h1>
+            <a href="{{ route('home') }}"
+               class="px-4 py-2 rounded-md bg-primary text-white hover:bg-primary/90 dark:hover:bg-primary/80 transition">
+                Retour à l'accueil
             </a>
         </div>
 
         <!-- Carte profil utilisateur -->
-        <div class="bg-white shadow-md rounded-lg p-8 mb-10 border-t-4 border-primary">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div class="bg-white dark:bg-dark-card shadow-md dark:shadow-none rounded-lg p-8 mb-10 border-t-4 border-primary dark:border dark:border-dark-border">
+            <div class="flex flex-row md:flex-row md:items-center md:justify-between gap-6">
                 <div class="flex items-center gap-4">
-                    <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0cbaba&color=fff"
-                         alt="Avatar"
-                         class="w-20 h-20 rounded-full shadow">
+                    @livewire('avatar-color-picker')
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-800">{{ Auth::user()->name }}</h2>
-                        <p class="text-gray-500">{{ Auth::user()->email }}</p>
-                        <p class="mt-2 text-sm text-gray-400">Membre depuis le {{ Auth::user()->created_at->format('d/m/Y') }}</p>
+                        <div class="flex items-center gap-2 group">
+                            <h2 class="text-2xl font-bold text-gray-800 dark:text-dark-text">{{ Auth::user()->name }}</h2>
+                            <button type="button"
+                                    x-data
+                                    @click="Livewire.dispatch('openProfileModal', { mode: 'info' })"
+                                    class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-gray-400 dark:text-dark-muted hover:text-primary dark:hover:text-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-gray-500 dark:text-dark-muted">{{ Auth::user()->email }}</p>
+                        <p class="mt-2 text-sm text-gray-400 dark:text-dark-muted">Membre depuis le {{ Auth::user()->created_at->format('d/m/Y') }}</p>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <a href="{{ route('home') }}"
-                       class="px-4 py-2 rounded-md bg-secondary text-white hover:bg-[#5a0063] transition">
-                        Retour à l’accueil
-                    </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"
-                                class="px-4 py-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition">
+                                class="px-4 py-2 rounded-md bg-red-500 dark:bg-red-600 text-white hover:bg-red-600 dark:hover:bg-red-700 transition">
                             Se déconnecter
                         </button>
                     </form>
@@ -43,38 +47,14 @@
             </div>
         </div>
 
-        <!-- Statistiques du profil -->
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="bg-white shadow-md rounded-lg p-6 border-l-4 border-primary">
-                <h3 class="text-lg font-semibold text-gray-700 mb-2">Projets</h3>
-                <p class="text-4xl font-bold text-secondary">
-                    {{ \App\Models\Project::where('chef_projet', Auth::id())->count() }}
-                </p>
-                <p class="text-sm text-gray-400">Projets créés par vous</p>
-            </div>
-
-            <div class="bg-white shadow-md rounded-lg p-6 border-l-4 border-primary">
-                <h3 class="text-lg font-semibold text-gray-700 mb-2">Sprints actifs</h3>
-                <p class="text-4xl font-bold text-secondary">
-                    {{ \App\Models\Sprint::count() }}
-                </p>
-                <p class="text-sm text-gray-400">Tous les sprints en cours</p>
-            </div>
-
-            <div class="bg-white shadow-md rounded-lg p-6 border-l-4 border-primary">
-                <h3 class="text-lg font-semibold text-gray-700 mb-2">Tâches assignées</h3>
-                <p class="text-4xl font-bold text-secondary">
-                    {{ \App\Models\Task::where('responsable_id', Auth::id())->count() }}
-                </p>
-                <p class="text-sm text-gray-400">Tâches attribuées à vous</p>
-            </div>
-        </div>
-
         <!-- Section Bienvenue -->
-        <div class="mt-12 bg-gradient-to-r from-primary to-[#380036] rounded-lg p-8 text-white shadow-lg">
-            <h2 class="text-2xl font-bold mb-3">Bonjour, {{ Auth::user()->name }} 👋</h2>
-            <p class="text-lg">Ravi de vous revoir ! Gérez vos projets, sprints et tâches directement depuis votre tableau de bord. Commencez dès maintenant à faire progresser vos objectifs.</p>
+        <div class="mt-12 bg-sky-200 dark:from-blue-900/40 dark:to-blue-800/30 rounded-lg p-8 text-white shadow-lg dark:shadow-xl border dark:border-blue-700/30">
+            <h2 class="text-2xl font-bold mb-3">Bonjour, {{ Auth::user()->name }}</h2>
+            <p class="text-lg text-white/90 dark:text-blue-100">Ravi de vous revoir ! Gérez vos projets, sprints et tâches directement depuis votre tableau de bord. Commencez dès maintenant à faire progresser vos objectifs.</p>
         </div>
     </div>
 </div>
+
+@livewire('profile-edit-modal')
+
 @endsection
