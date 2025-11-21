@@ -142,7 +142,7 @@ colors: {
 }
 ```
 
-## 📸 Captures d'écran
+## Captures d'écran
 
 ![Home](home.png)
 ![Roadmap](roadmap.png)
