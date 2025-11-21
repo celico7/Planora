@@ -141,5 +141,12 @@ colors: {
   // ...
 }
 ```
+
+## 📸 Captures d'écran
+
+![Home](home.png)
+![Roadmap](roadmap.png)
+![Kanban](kanban.png)
+
 Ce projet est développé dans le cadre d'un projet universitaire (SAE501).
 - **Hoffmann Célia** - Développement initial - 2025
