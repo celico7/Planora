@@ -145,8 +145,13 @@ colors: {
 ## Captures d'écran
 
 ![Home](home.png)
+- Vue de la homepage
+  
 ![Roadmap](roadmap.png)
+- Exemple d'une roadmap
+  
 ![Kanban](kanban.png)
+- Exemple d'un tableau Kanban
 
 Ce projet est développé dans le cadre d'un projet universitaire (SAE501).
 - **Hoffmann Célia** - Développement initial - 2025
